@@ -222,6 +222,7 @@
 <div id="downhint">↓ approfondimenti</div>
 <div id="hint">← → naviga · ↓ dettagli · V vetrina · N note · Esc indice</div>
 <div id="hud">
+  <span class="pill share" title="Condividi" style="cursor:pointer">⤴ Condividi</span>
   <span class="pill mode">RELATORE</span>
   <span class="pill timer">00:00</span>
   <span class="pill pos">1 / 1</span>
@@ -470,9 +471,12 @@ function scenesDef(){ return [
   <h1 class="heavy" data-anim style="--i:1; color:var(--rosso); font-size:clamp(30px,5.5vw,76px)">Segnalateci i 3 casi più gravi di Milano.</h1>
   <p class="lead" data-anim style="--i:2">Il primo atto parte entro <b>15 giorni</b>.</p>
   <p class="sub" data-anim style="--i:3">Modulo di adesione in sala — la vostra presenza fa la differenza.</p>
-  <div class="thumb" data-anim style="--i:4; margin-top:1em" data-img="img/qr-adesione.png" data-cap="QR adesione / contatti — da inserire"></div>
+  <div class="row" data-anim style="--i:4; margin-top:1em; gap:2vw; align-items:flex-start">
+    <div class="thumb" data-img="img/qr-adesione.png" data-cap="Adesione — da inserire"><img src="img/qr-adesione.png" alt="" style="max-height:22vh" onerror="this.outerHTML='<div class=ph>QR Adesione<br><small>da inserire</small></div>'"><div class="sub" style="font-size:.8em;margin-top:.4em">Adesione</div></div>
+    <div class="thumb" data-img="img/qr-webapp.png" data-cap="Rivedi e condividi questa presentazione"><img src="img/qr-webapp.png" alt="" style="max-height:22vh" onerror="this.outerHTML='<div class=ph>QR Presentazione</div>'"><div class="sub" style="font-size:.8em;margin-top:.4em">Rivedi e condividi</div></div>
+  </div>
   <div class="stripe"><span class="logos">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>`,
-  notes:"La CTA la «carica» Marco e la chiude il padrone di casa milanese. Concordare prima chi gestisce Q&A."}
+  notes:"La CTA la «carica» Marco e la chiude il padrone di casa milanese. Due QR: uno per l'adesione, uno per riaprire e condividere la presentazione sul telefono (per i colleghi che lavorano). Concordare chi gestisce Q&A."}
 ];}
 
 /* ===========================================================================
@@ -720,6 +724,14 @@ stage.addEventListener('click',e=>{
 let tx=0; stage.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
 stage.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;
   if(Math.abs(dx)>50){dx<0?nextMain():prevMain();}});
+
+/* condividi (Web Share API + fallback copia link) */
+document.querySelector('#hud .share').onclick=async(e)=>{
+  e.stopPropagation();
+  const url=location.href, title='Basta Abusivismo — Milano 2026';
+  if(navigator.share){ try{ await navigator.share({title,url}); }catch(_){} }
+  else { try{ await navigator.clipboard.writeText(url); alert('Link copiato:\n'+url); }catch(_){ prompt('Copia il link:',url); } }
+};
 
 /* avvio */
 document.querySelectorAll('#start button').forEach(b=>b.onclick=async()=>{
