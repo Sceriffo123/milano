@@ -1,0 +1,44 @@
+/* Frame condiviso per i tipi di scena del deck (1280×720). */
+.slide {
+  width: 1280px;
+  height: 720px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px 96px;
+  font-family: var(--font-body);
+}
+.slide.dark  { background: var(--nero);  color: var(--panna); }
+.slide.light { background: var(--panna); color: var(--nero); }
+
+.slide h1 { font-family: var(--font-heavy); font-weight: 900; letter-spacing: -.01em; line-height: .95; margin: .12em 0; }
+.slide h2 { font-family: var(--font-heavy); font-weight: 900; letter-spacing: -.01em; line-height: 1; margin: .08em 0; font-size: 60px; }
+.slide .lead { font-size: 30px; line-height: 1.25; max-width: 24ch; }
+.slide .sub  { font-size: 24px; color: var(--grigio); max-width: 40ch; line-height: 1.3; }
+.slide.dark .sub { color: var(--grigio-su-scuro); }
+
+.slide .kicker { color: var(--rosso); font-weight: 700; letter-spacing: .18em; text-transform: uppercase; font-size: 16px; }
+.slide .chip { display: inline-block; background: var(--rosso); color: #fff; font-weight: 700; padding: .5em 1em; border-radius: 3px; letter-spacing: .12em; font-size: 15px; white-space: nowrap; }
+.slide .num-giant { font-family: var(--font-heavy); font-weight: 900; color: var(--rosso); font-size: 230px; line-height: .85; letter-spacing: -.01em; }
+
+.slide .card { background: var(--bianco); color: var(--nero); border-left: 8px solid var(--rosso); padding: 20px 24px; box-shadow: var(--shadow-card); border-radius: 4px; font-size: 21px; line-height: 1.4; }
+.slide.dark .card { background: var(--carta-scura); color: var(--panna); }
+.slide .card b { color: var(--rosso); }
+.slide .band { background: var(--rosso); color: #fff; padding: 16px 22px; border-radius: 4px; font-weight: 700; font-size: 22px; line-height: 1.4; }
+
+.slide .firma { margin-top: 28px; font-weight: 700; letter-spacing: .02em; font-size: 22px; }
+.slide .stripe { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; color: #111; display: flex; align-items: center; gap: 22px; padding: 14px 96px; font-size: 14px; }
+.slide.dark .stripe { background: #fff; }
+.slide .stripe .logos { font-weight: 900; letter-spacing: .03em; color: var(--rosso); }
+
+.slide .counter { font-family: var(--font-heavy); font-weight: 900; color: var(--rosso); font-size: 104px; line-height: .9; }
+.slide .clab { font-size: 18px; color: var(--grigio); max-width: 16ch; margin-top: 8px; }
+.slide.dark .clab { color: var(--grigio-su-scuro); }
+
+.row { display: flex; gap: 44px; align-items: center; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.four { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; }
+.corsivo { font-style: italic; }

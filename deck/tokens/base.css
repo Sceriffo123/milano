@@ -1,0 +1,57 @@
+/* ============================================================
+   URITAXI · FILT CGIL — BASE & MOTIVI
+   Reset leggero, default tipografici, classi-motivo riusabili
+   (heavy, kicker, chip, card con barra rossa, band, numeri giganti).
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  font-weight: var(--weight-body);
+  color: var(--text-on-light);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- Titolo pesantissimo (motivo cardine) --- */
+.heavy {
+  font-family: var(--font-heavy);
+  font-weight: var(--weight-heavy);
+  letter-spacing: var(--track-heavy);
+  line-height: var(--leading-display);
+}
+
+/* --- Occhiello / kicker --- */
+.kicker {
+  color: var(--text-accent);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  font-size: var(--fs-kicker);
+}
+
+/* --- Numero gigante rosso --- */
+.num-giant {
+  font-family: var(--font-heavy);
+  font-weight: var(--weight-heavy);
+  color: var(--rosso);
+  font-size: var(--fs-giant);
+  line-height: var(--leading-giant);
+  letter-spacing: var(--track-heavy);
+}
+
+/* --- Superfici scena --- */
+.surface-dark  { background: var(--surface-dark);  color: var(--text-on-dark); }
+.surface-light { background: var(--surface-light); color: var(--text-on-light); }
+
+/* --- Testo di servizio --- */
+.lead { font-size: var(--fs-lead); line-height: var(--leading-lead); max-width: 24ch; }
+.sub  { font-size: var(--fs-sub);  color: var(--text-muted-light); max-width: 34ch; line-height: var(--leading-lead); }
+.surface-dark .sub { color: var(--text-muted-dark); }
+.corsivo { font-style: italic; }
+
+/* --- Accessibilità: rispetta la riduzione del movimento --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+}

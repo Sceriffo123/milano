@@ -1,0 +1,38 @@
+/* ============================================================
+   URITAXI · FILT CGIL — COLORI
+   Palette ufficiale del volantino. NON introdurre altri colori brand.
+   nero profondo · rosso taxi · panna · bianco
+   ============================================================ */
+:root {
+  /* --- Palette base (immutabile) --- */
+  --nero: #1A1A1A;     /* dominante: scene scure, testo su chiaro */
+  --rosso: #C8102E;    /* accento unico: barre, numeri, chip, band */
+  --panna: #F7F5F2;    /* scene chiare, testo su scuro */
+  --bianco: #FFFFFF;   /* superfici card su scene chiare */
+
+  /* --- Neutri di servizio (derivati, non brand) --- */
+  --grigio: #6B6B6B;          /* testo secondario su chiaro */
+  --grigio-su-scuro: #B9B4AC; /* testo secondario su scuro */
+  --carta-scura: #232323;     /* card su scene scure */
+  --rosso-scuro: #7D0A1D;     /* bordo/ombra del rosso, stati attivi */
+  --linea: rgba(0,0,0,.12);   /* divisori su chiaro */
+  --linea-scura: rgba(255,255,255,.14); /* divisori su scuro */
+
+  /* --- Alias semantici --- */
+  --surface-dark: var(--nero);
+  --surface-light: var(--panna);
+  --surface-card: var(--bianco);
+  --surface-card-dark: var(--carta-scura);
+  --accent: var(--rosso);
+  --accent-strong: var(--rosso-scuro);
+
+  --text-on-light: var(--nero);
+  --text-on-dark: var(--panna);
+  --text-muted-light: var(--grigio);
+  --text-muted-dark: var(--grigio-su-scuro);
+  --text-accent: var(--rosso);
+
+  --border-accent: var(--rosso);
+  --hairline: var(--linea);
+  --hairline-dark: var(--linea-scura);
+}

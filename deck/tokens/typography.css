@@ -1,0 +1,44 @@
+/* ============================================================
+   URITAXI · FILT CGIL — TIPOGRAFIA
+   Titoli in sans pesantissimo (Archivo Black / Arial Black).
+   Corpo in sans pulito (Archivo / Helvetica Neue).
+   Titoli grandi 40pt+, poco testo per scena.
+   ============================================================ */
+:root {
+  /* --- Famiglie --- */
+  --font-heavy: "Archivo Black", "Arial Black", Impact, Arial, sans-serif;
+  --font-body: "Archivo", "Helvetica Neue", Arial, system-ui, sans-serif;
+
+  /* --- Pesi --- */
+  --weight-body: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+  --weight-heavy: 900;
+
+  /* --- Tracciatura --- */
+  --track-heavy: -0.01em;   /* titoli pesantissimi, leggermente serrati */
+  --track-normal: 0; /* @kind font */
+  --track-kicker: 0.18em;   /* occhielli / kicker maiuscoli */
+  --track-chip: 0.12em;     /* chip / etichette */
+  --track-wide: 0.08em;     /* intestazioni tabella */
+
+  /* --- Interlinea --- */
+  --leading-giant: 0.85;
+  --leading-display: 0.95;
+  --leading-title: 1.0;
+  --leading-lead: 1.25;
+  --leading-body: 1.45;
+
+  /* --- Scala tipografica (responsive, ottimizzata per proiezione 16:9) --- */
+  --fs-giant: clamp(90px, 22vw, 300px);   /* @kind font */ /* numeri giganti / anni */
+  --fs-display: clamp(40px, 9vw, 128px);  /* @kind font */ /* H1 manifesto */
+  --fs-h1: clamp(34px, 7vw, 96px);        /* @kind font */
+  --fs-h2: clamp(30px, 5.4vw, 72px);      /* @kind font */
+  --fs-counter: clamp(52px, 9vw, 120px);  /* @kind font */ /* contatori */
+  --fs-lead: clamp(17px, 2.3vw, 30px);    /* @kind font */ /* sommario */
+  --fs-sub: clamp(15px, 1.8vw, 24px);     /* @kind font */ /* servizio */
+  --fs-body: clamp(15px, 1.7vw, 20px);    /* @kind font */
+  --fs-kicker: clamp(11px, 1.4vw, 16px);  /* @kind font */
+  --fs-chip: clamp(11px, 1.4vw, 15px);    /* @kind font */
+  --fs-fine: clamp(10px, 1.3vw, 14px);    /* @kind font */ /* stripe / crediti */
+}

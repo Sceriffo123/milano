@@ -1,0 +1,23 @@
+<!-- @dsCard group="Colors" viewport="700x170" name="Neutri di servizio" subtitle="Derivati — testo secondario, card scure, divisori" -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--panna); padding: 18px; }
+  .wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .sw { height: 110px; border-radius: var(--radius-card); display: flex; flex-direction: column; justify-content: flex-end; padding: 12px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+  .sw .name { font-weight: 700; font-size: 12.5px; }
+  .sw .hex { font-size: 11px; opacity: .7; margin-top: 2px; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="sw" style="background: var(--grigio); color:#fff;"><div class="name">Grigio</div><div class="hex">#6B6B6B</div></div>
+    <div class="sw" style="background: var(--grigio-su-scuro); color:#1a1a1a;"><div class="name">Grigio su scuro</div><div class="hex">#B9B4AC</div></div>
+    <div class="sw" style="background: var(--carta-scura); color:#fff;"><div class="name">Carta scura</div><div class="hex">#232323</div></div>
+    <div class="sw" style="background: var(--rosso-scuro); color:#fff;"><div class="name">Rosso scuro</div><div class="hex">#7D0A1D</div></div>
+  </div>
+</body>
+</html>

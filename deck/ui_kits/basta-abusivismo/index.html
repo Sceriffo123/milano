@@ -1,0 +1,37 @@
+<!-- @dsCard group="Basta Abusivismo" viewport="1280x720" name="Web-app a scene" subtitle="Overlay d'avvio, HUD, modalità Relatore/Vetrina" -->
+<!-- @startingPoint section="Web-app" subtitle="Presentazione a scene URITAXI · FILT CGIL" viewport="1280x720" -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Basta Abusivismo — Milano, 10 giugno 2026</title>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="kit.css">
+</head>
+<body>
+  <div id="progress"></div>
+  <div id="stage"></div>
+
+  <div id="hint">← → naviga · V vetrina · F schermo intero</div>
+  <div id="hud">
+    <span class="pill mode">RELATORE</span>
+    <span class="pill timer">00:00</span>
+    <span class="pill pos">1 / 1</span>
+  </div>
+
+  <div id="start">
+    <span class="chip">MILANO · 10 GIUGNO 2026 · SPAZIO KOLBE</span>
+    <h1 class="heavy">BASTA ABUSIVISMO</h1>
+    <small>Il metodo Firenze: quindici anni di atti, risultati verificabili.</small>
+    <div class="btns">
+      <button class="primary" data-mode="relatore">▶ Modalità Relatore</button>
+      <button class="ghost" data-mode="vetrina">⟳ Modalità Vetrina (loop)</button>
+    </div>
+    <small>Relatore = navighi tu. Vetrina = scorre da sola in loop, ideale per lo schermo in sala.</small>
+  </div>
+
+  <script src="scenes.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

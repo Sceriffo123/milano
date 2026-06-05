@@ -1,0 +1,27 @@
+<!-- @dsCard group="Spacing" viewport="700x180" name="Motivo: barra rossa" subtitle="8px verticale a sinistra · 6px superiore sui blocchi flow" -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--panna); color: var(--nero); padding: 24px 28px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; align-items: center; }
+  .card { background: #fff; border-left: var(--bar-width) solid var(--rosso); padding: 16px 18px; box-shadow: var(--shadow-card); border-radius: var(--radius-card); }
+  .card b { color: var(--rosso); }
+  .card p { margin: 6px 0 0; font-size: 13px; line-height: 1.4; color: #333; }
+  .step { background: #fff; border-top: var(--bar-top-width) solid var(--rosso); padding: 14px 16px; box-shadow: var(--shadow-card); border-radius: var(--radius-card); }
+  .step b { display: block; font-size: 26px; color: var(--rosso); font-family: var(--font-heavy); }
+  .step span { font-size: 12px; letter-spacing: .04em; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <b>Barra verticale 8px</b>
+    <p>Ogni card porta la barra rossa a sinistra: il segno di riconoscimento del sistema.</p>
+  </div>
+  <div class="step">
+    <b>1</b>
+    <span>SEGNALAZIONE</span>
+  </div>
+</body>
+</html>

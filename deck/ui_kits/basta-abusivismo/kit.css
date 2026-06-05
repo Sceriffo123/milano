@@ -1,0 +1,93 @@
+/* ============================================================
+   UI KIT — Basta Abusivismo (web-app a scene)
+   Ricreazione fedele dell'originale vanilla. Usa i token di marca
+   via ../../styles.css; qui solo il framing della web-app.
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: var(--font-body);
+  background: #000;
+  color: var(--nero);
+  overflow: hidden;
+}
+.heavy { font-family: var(--font-heavy); font-weight: 900; letter-spacing: -.01em; }
+
+/* ---- Stage / Scene ---- */
+#stage { position: fixed; inset: 0; overflow: hidden; }
+.scene {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  justify-content: center; padding: 6vh 8vw; opacity: 0; visibility: hidden;
+  pointer-events: none;
+}
+.scene.active { opacity: 1; visibility: visible; pointer-events: auto; }
+.scene.dark { background: var(--nero); color: var(--panna); }
+.scene.light { background: var(--panna); color: var(--nero); }
+
+.kicker { color: var(--rosso); font-weight: 700; letter-spacing: .18em; text-transform: uppercase; font-size: clamp(11px,1.4vw,16px); }
+.scene h1 { font-size: clamp(40px,9vw,128px); line-height: .95; margin: .15em 0; }
+.scene h2 { font-size: clamp(30px,5.4vw,72px); line-height: 1; margin: .1em 0; }
+.lead { font-size: clamp(17px,2.3vw,30px); max-width: 24ch; line-height: 1.25; }
+.sub { font-size: clamp(15px,1.8vw,24px); color: var(--grigio); max-width: 36ch; }
+.dark .sub { color: var(--grigio-su-scuro); }
+.num-giant { font-family: var(--font-heavy); font-weight: 900; font-size: clamp(90px,22vw,300px); color: var(--rosso); line-height: .85; letter-spacing: -.01em; }
+.corsivo { font-style: italic; }
+
+/* reveal — SOLO transform: l'opacità resta 1, così il contenuto è sempre
+   visibile (stampa, PDF, ambienti che mettono in pausa le animazioni). */
+.scene.active [data-anim] { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .scene.active [data-anim] { animation: revealUp .7s ease both; animation-delay: calc(var(--i,0) * .18s); }
+}
+@keyframes revealUp { from { transform: translateY(16px); } to { transform: translateY(0); } }
+
+.chip { display: inline-block; background: var(--rosso); color: #fff; font-weight: 700; padding: .5em 1em; border-radius: 3px; letter-spacing: .12em; font-size: clamp(11px,1.4vw,15px); white-space: nowrap; }
+.card { background: #fff; color: var(--nero); border-left: 8px solid var(--rosso); padding: 1.1em 1.3em; box-shadow: var(--shadow-card); border-radius: 4px; max-width: 60ch; font-size: clamp(15px,1.7vw,20px); line-height: 1.4; }
+.dark .card { background: var(--carta-scura); color: var(--panna); }
+.card b { color: var(--rosso); }
+.dark .card b { color: var(--rosso); }
+.band { background: var(--rosso); color: #fff; padding: .8em 1.2em; border-radius: 4px; font-weight: 700; font-size: clamp(15px,1.7vw,21px); line-height: 1.4; }
+.firma { margin-top: 1.2em; font-weight: 700; letter-spacing: .02em; font-size: clamp(15px,1.7vw,22px); }
+
+.stripe { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; color: #111; display: flex; align-items: center; gap: 1.2em; padding: .7em 8vw; font-size: clamp(10px,1.3vw,14px); }
+.stripe .logos { font-weight: 900; letter-spacing: .03em; color: var(--rosso); }
+
+.row { display: flex; gap: 2.4vw; align-items: center; flex-wrap: wrap; }
+.col { display: flex; flex-direction: column; gap: .6em; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 2.4vw; width: 100%; }
+.three { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.6vw; width: 100%; }
+.four { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.4vw; width: 100%; }
+.counter { font-family: var(--font-heavy); font-weight: 900; color: var(--rosso); font-size: clamp(52px,9vw,120px); line-height: .9; }
+.clab { font-size: clamp(13px,1.5vw,18px); color: var(--grigio); max-width: 18ch; margin-top: .3em; }
+.dark .clab { color: var(--grigio-su-scuro); }
+
+/* macchina */
+.flow { display: flex; gap: .5em; width: 100%; }
+.flow .step { flex: 1; min-width: 120px; background: #fff; border-top: 6px solid var(--rosso); padding: 1em .8em; box-shadow: var(--shadow-card); border-radius: 4px; }
+.flow .step.last { background: var(--rosso); color: #fff; border-top-color: var(--rosso-scuro); }
+.flow .step b { display: block; font-family: var(--font-heavy); font-size: 1.7em; color: var(--rosso); }
+.flow .step.last b { color: #fff; }
+.flow .step small { color: var(--grigio); }
+.flow .step.last small { color: rgba(255,255,255,.85); }
+
+/* ---- HUD ---- */
+#progress { position: fixed; top: 0; left: 0; height: 4px; background: var(--rosso); width: 0; z-index: 40; transition: width .4s ease; }
+#hud { position: fixed; bottom: 14px; right: 18px; z-index: 40; display: flex; gap: 8px; align-items: center; font-size: 12px; }
+#hud .pill { background: rgba(0,0,0,.55); color: #fff; padding: 4px 10px; border-radius: 20px; backdrop-filter: blur(4px); }
+body.mode-vetrina #hud .mode { background: var(--rosso); }
+#hint { position: fixed; bottom: 14px; left: 18px; z-index: 40; color: #eee; font-size: 12px; background: rgba(0,0,0,.45); padding: 4px 10px; border-radius: 20px; }
+
+/* ---- Start overlay ---- */
+#start { position: fixed; inset: 0; z-index: 80; background: var(--nero); color: var(--panna); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2em; text-align: center; padding: 8vw; }
+#start h1 { font-size: clamp(40px,8vw,96px); color: #fff; margin: 0; }
+#start small { color: var(--grigio-su-scuro); max-width: 52ch; }
+#start .btns { display: flex; gap: 1em; flex-wrap: wrap; justify-content: center; }
+#start button { font: inherit; font-weight: 700; cursor: pointer; border: 0; border-radius: 4px; padding: .9em 1.6em; font-size: clamp(14px,1.8vw,20px); display: inline-flex; align-items: center; gap: .5em; }
+#start .primary { background: var(--rosso); color: #fff; }
+#start .ghost { background: transparent; color: #fff; border: 2px solid #fff; }
+#start button:hover { filter: brightness(.92); }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene.active, .scene.active [data-anim] { animation: none !important; }
+  [data-anim] { opacity: 1 !important; transform: none !important; }
+}

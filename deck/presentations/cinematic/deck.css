@@ -1,0 +1,254 @@
+/* ============================================================
+   BASTA ABUSIVISMO — versione cinematografica
+   Palette tri-sindacale (deck-locale, non tocca i token di marca):
+   blu URITAXI · rosso FILT CGIL · verde UGL. Fondi scuri premium,
+   gradienti, grana, vignette. Tipografia pesantissima di sistema.
+   ============================================================ */
+
+:root {
+  /* fondali cinematografici — deep navy URITAXI */
+  --bg-0: #0A0F1A;        /* navy profondo (eco del wordmark uritaxi #08091D) */
+  --bg-1: #0E1524;
+  --bg-2: #131C2E;
+  --panna: #F4F1EA;       /* scene chiare */
+  --panna-2: #E9E4D9;
+
+  /* colori di marca campionati dai loghi reali */
+  --blu: #1E6FC2;         /* URITAXI — azzurro primario */
+  --blu-deep: #102A43;    /* URITAXI — navy del wordmark */
+  --blu-soft: #5AA8EE;    /* accento/bagliore su scuro */
+  --rosso: #D81528;       /* FILT CGIL — rosso (camp. #D11628 / #EC0004) */
+  --rosso-deep: #8E0C18;
+  --rosso-soft: #FF4F5F;
+  --verde: #30AD2F;       /* URITAXI — verde del logo */
+  --verde-deep: #1E7A1D;
+  --verde-soft: #62D45F;
+
+  /* neutri su scuro */
+  --ink: #F4F1EA;
+  --ink-dim: #A9B0BD;
+  --ink-faint: #6B7480;
+  --line: rgba(255,255,255,.10);
+  --line-strong: rgba(255,255,255,.18);
+
+  /* gradiente "fronte comune" */
+  --fronte: linear-gradient(90deg, var(--blu) 0%, var(--rosso) 52%, var(--verde) 100%);
+  --fronte-soft: linear-gradient(90deg, var(--blu-soft), var(--rosso-soft) 52%, var(--verde-soft));
+
+  --shadow-cine: 0 40px 120px rgba(0,0,0,.55);
+  --glass: rgba(255,255,255,.045);
+  --glass-line: rgba(255,255,255,.12);
+}
+
+/* ---------- shell ---------- */
+deck-stage:not(:defined) { visibility: hidden; }
+html, body { margin: 0; background: #000; }
+body { font-family: var(--font-body, "Archivo","Helvetica Neue",Arial,sans-serif); }
+.heavy { font-family: var(--font-heavy, "Archivo Black","Arial Black",Impact,sans-serif); font-weight: 900; letter-spacing: -.015em; }
+
+/* ogni slide riempie il canvas 1920×1080 */
+.s {
+  position: absolute; inset: 0; overflow: hidden;
+  color: var(--ink);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 110px 152px;
+  background: var(--bg-0);
+}
+.s.light { background: var(--panna); color: #14171C; }
+
+/* strato di fondo: gradiente d'atmosfera */
+.s::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 12% 8%, rgba(30,111,194,.16), transparent 55%),
+    radial-gradient(120% 90% at 92% 96%, rgba(216,21,40,.14), transparent 55%);
+}
+.s.light::before {
+  background:
+    radial-gradient(110% 80% at 100% 0%, rgba(30,111,194,.10), transparent 60%),
+    radial-gradient(90% 80% at 0% 100%, rgba(216,21,40,.06), transparent 60%);
+}
+/* grana cinematografica */
+.s::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .5;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+  mix-blend-mode: overlay;
+}
+.s > * { position: relative; z-index: 2; }
+
+/* vignette per le scene piene d'immagine */
+.s.cine > .vignette {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(7,9,15,.30) 0%, rgba(7,9,15,.08) 32%, rgba(7,9,15,.62) 78%, rgba(7,9,15,.92) 100%),
+    radial-gradient(120% 120% at 50% 40%, transparent 50%, rgba(0,0,0,.55) 100%);
+}
+
+/* ---------- full-bleed image slot ---------- */
+.fullbleed { position: absolute; inset: 0; z-index: 0; }
+.fullbleed image-slot { position: absolute; inset: 0; width: 100%; height: 100%; }
+.duotone { filter: saturate(.55) contrast(1.08) brightness(.82); }
+
+/* ---------- signature: barra fronte comune ---------- */
+.frontbar { height: 8px; width: 220px; border-radius: 99px; background: var(--fronte); box-shadow: 0 0 28px rgba(216,21,40,.35); }
+.frontbar.full { width: 100%; }
+.rule { height: 1px; background: var(--line-strong); border: 0; width: 100%; }
+
+/* ---------- tipografia ---------- */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-weight: 700; letter-spacing: .26em; text-transform: uppercase; font-size: 19px; color: var(--ink-dim);
+}
+.eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rosso); box-shadow: 0 0 14px var(--rosso); }
+.s.light .eyebrow { color: #6a6a6a; }
+
+.display { font-size: 168px; line-height: .9; margin: 0; }
+.h1 { font-size: 116px; line-height: .92; margin: 0; }
+.h2 { font-size: 78px; line-height: .96; margin: 0; }
+.lead { font-size: 38px; line-height: 1.28; max-width: 24ch; color: var(--ink); font-weight: 500; }
+.s.light .lead { color: #23262C; }
+.sub { font-size: 27px; line-height: 1.4; color: var(--ink-dim); max-width: 40ch; }
+.s.light .sub { color: #555; }
+.korsiv { font-style: italic; }
+
+.grad { background: var(--fronte-soft); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.c-blu { color: var(--blu-soft); }
+.c-rosso { color: var(--rosso-soft); }
+.c-verde { color: var(--verde-soft); }
+.s.light .c-blu { color: var(--blu-deep); }
+.s.light .c-rosso { color: var(--rosso-deep); }
+.s.light .c-verde { color: var(--verde-deep); }
+
+/* numero gigante con bagliore */
+.giant { font-size: 264px; line-height: .82; letter-spacing: -.02em; }
+.giant.rosso { color: var(--rosso); text-shadow: 0 0 80px rgba(216,21,40,.45); }
+.giant.blu { color: var(--blu); text-shadow: 0 0 80px rgba(30,111,194,.45); }
+.giant.ghost { color: transparent; -webkit-text-stroke: 2px var(--line-strong); }
+
+/* ---------- chip & badge ---------- */
+.chip { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: 18px; padding: 12px 20px; border-radius: 6px; }
+.chip.solid { background: var(--rosso); color: #fff; box-shadow: 0 10px 30px rgba(216,21,40,.35); }
+.chip.line { border: 1.5px solid var(--line-strong); color: var(--ink-dim); }
+
+/* ---------- cards ---------- */
+.cards { display: grid; gap: 26px; }
+.glass {
+  position: relative; background: var(--glass); border: 1px solid var(--glass-line);
+  border-radius: 16px; padding: 34px 36px; backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+.glass .ttl { font-size: 30px; font-weight: 800; margin: 0 0 10px; letter-spacing: -.01em; }
+.glass p { margin: 0; font-size: 23px; line-height: 1.42; color: var(--ink-dim); }
+.glass .tag { font-size: 16px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+/* barra-accento a sinistra, colore per sigla */
+.glass.bar { padding-left: 40px; }
+.glass.bar::before { content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 5px; border-radius: 99px; background: var(--rosso); }
+.glass.blu::before { background: var(--blu); }
+.glass.verde::before { background: var(--verde); }
+.glass.bar.blu .tag { color: var(--blu-soft); }
+.glass.bar .tag { color: var(--rosso-soft); }
+.glass.bar.verde .tag { color: var(--verde-soft); }
+
+.s.light .glass { background: rgba(20,23,28,.03); border-color: rgba(20,23,28,.10); backdrop-filter: none; }
+.s.light .glass p { color: #4a4d53; }
+
+/* banda affermazione */
+.band { background: var(--rosso); color: #fff; padding: 24px 32px; border-radius: 12px; font-weight: 700; font-size: 27px; line-height: 1.36; box-shadow: 0 24px 60px rgba(216,21,40,.28); }
+.band.fronte { background: var(--fronte); }
+
+/* ---------- stats ---------- */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+.stat .num { font-size: 132px; line-height: .86; letter-spacing: -.02em; }
+.stat .lab { font-size: 21px; color: var(--ink-dim); margin-top: 14px; max-width: 16ch; line-height: 1.3; }
+.s.light .stat .lab { color: #555; }
+
+/* ---------- macchina (flow) ---------- */
+.flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.flow .step { position: relative; background: var(--glass); border: 1px solid var(--glass-line); border-radius: 14px; padding: 30px 24px; overflow: hidden; }
+.flow .step .n { font-size: 64px; line-height: 1; color: var(--blu-soft); }
+.flow .step .t { font-weight: 800; letter-spacing: .06em; margin-top: 12px; font-size: 23px; }
+.flow .step small { color: var(--ink-faint); font-size: 18px; }
+.flow .step.last { background: linear-gradient(160deg, var(--rosso), var(--rosso-deep)); border-color: transparent; box-shadow: 0 24px 60px rgba(216,21,40,.30); }
+.flow .step.last .n, .flow .step.last small { color: rgba(255,255,255,.92); }
+.flow .step .arrow { position: absolute; right: -10px; top: 50%; color: var(--ink-faint); font-size: 30px; }
+
+/* ---------- due mondi (split) ---------- */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; height: 100%; }
+.world { display: flex; flex-direction: column; justify-content: center; gap: 22px; padding: 0 64px; }
+.world.law { border-right: 1px solid var(--line-strong); }
+.world .wk { font-weight: 800; letter-spacing: .2em; text-transform: uppercase; font-size: 20px; }
+.world.law .wk { color: var(--blu-soft); }
+.world.pol .wk { color: var(--ink-dim); }
+.world h3 { font-size: 56px; line-height: .98; margin: 0; }
+.world li { font-size: 24px; color: var(--ink-dim); line-height: 1.4; margin: 0; }
+.ring { width: 132px; height: 132px; border-radius: 50%; border: 6px solid var(--blu); box-shadow: 0 0 50px rgba(30,111,194,.4), inset 0 0 30px rgba(30,111,194,.25); }
+.wobble { width: 240px; height: 60px; }
+
+/* ---------- domino ---------- */
+.domino { display: flex; align-items: flex-end; gap: 18px; height: 360px; }
+.tile {
+  width: 64px; height: 230px; border-radius: 10px; transform-origin: bottom left;
+  background: linear-gradient(180deg, #1a212d, #0e131b); border: 1px solid var(--line-strong);
+  display: flex; align-items: flex-end; justify-content: center; padding-bottom: 14px; box-shadow: var(--shadow-cine);
+  color: var(--ink-dim); font-size: 14px; font-weight: 700;
+}
+.tile span { writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing: .04em; }
+.tile.hot { background: linear-gradient(180deg, var(--rosso), var(--rosso-deep)); border-color: transparent; color: #fff; }
+
+/* ---------- speaker hint stripe ---------- */
+.foot { position: absolute; left: 152px; right: 152px; bottom: 64px; display: flex; align-items: center; gap: 22px; z-index: 3; }
+.foot .logos { font-weight: 900; letter-spacing: .04em; font-size: 19px; }
+.foot .logos .u { color: var(--blu-soft); } .foot .logos .f { color: var(--rosso-soft); } .foot .logos .g { color: var(--verde-soft); }
+.foot .meta { color: var(--ink-faint); font-size: 18px; }
+
+/* ============================================================
+   ANIMAZIONI — stato finale visibile come base; si anima DA nascosto
+   solo quando la slide è attiva e il movimento è consentito.
+   ============================================================ */
+.reveal { opacity: 1; transform: none; }
+.reveal-x { opacity: 1; transform: none; }
+.grow { transform: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-deck-active] .reveal { animation: cineRise .9s cubic-bezier(.16,.7,.24,1) both; animation-delay: var(--d, 0s); }
+  [data-deck-active] .reveal-x { animation: cineSlide 1s cubic-bezier(.16,.7,.24,1) both; animation-delay: var(--d, 0s); }
+  [data-deck-active] .kenburns { animation: ken 14s ease-out both; }
+  [data-deck-active] .grow { animation: cineGrow 1.1s cubic-bezier(.16,.7,.24,1) both; animation-delay: var(--d, 0s); }
+  [data-deck-active] .tile.fall { animation: dominoFall .55s cubic-bezier(.6,.04,.98,.34) forwards; animation-delay: var(--fd, 0s); }
+  [data-deck-active] .pulse { animation: pulse 2.6s ease-in-out infinite; }
+}
+@keyframes cineRise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+@keyframes cineSlide { from { opacity: 0; transform: translateX(-48px); } to { opacity: 1; transform: none; } }
+@keyframes cineGrow { from { opacity: 0; transform: scale(.86); } to { opacity: 1; transform: scale(1); } }
+@keyframes ken { from { transform: scale(1.12); } to { transform: scale(1); } }
+@keyframes dominoFall { to { transform: rotate(82deg); } }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 50px rgba(30,111,194,.4), inset 0 0 30px rgba(30,111,194,.25); } 50% { box-shadow: 0 0 78px rgba(30,111,194,.7), inset 0 0 38px rgba(30,111,194,.35); } }
+
+/* utilità layout */
+.col { display: flex; flex-direction: column; }
+.row { display: flex; }
+.gap-s { gap: 14px; } .gap-m { gap: 26px; } .gap-l { gap: 44px; }
+.mt-s { margin-top: 18px; } .mt-m { margin-top: 34px; } .mt-l { margin-top: 56px; }
+.center { align-items: center; text-align: center; justify-content: center; }
+.spread { justify-content: space-between; }
+.aend { align-items: flex-end; }
+.astart { align-items: flex-start; }
+.fill { flex: 1; }
+.wide { max-width: none; }
+
+/* ---------- targhe logo (loghi a colori su fondo scuro) ---------- */
+.logostrip { display: flex; align-items: center; gap: 18px; }
+.logoplate { background: #fff; border-radius: 12px; padding: 12px 16px; display: inline-flex; align-items: center; box-shadow: 0 12px 34px rgba(0,0,0,.35); }
+.logoplate img { display: block; height: 56px; width: auto; }
+.logoplate.lg img { height: 96px; }
+.logoplate.sm img { height: 40px; }
+
+/* ---------- registro casi "a scendere" ---------- */
+.casi-grid { columns: 3; column-gap: 36px; }
+.caso { break-inside: avoid; display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.caso .nm { flex: 1; font-size: 18px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.caso .pv { color: var(--ink-faint); font-size: 13px; font-weight: 700; }
+.badge { font-size: 10px; font-weight: 800; letter-spacing: .06em; padding: 3px 8px; border-radius: 5px; text-transform: uppercase; white-space: nowrap; }
+.badge.def { background: var(--rosso); color: #fff; box-shadow: 0 0 16px rgba(216,21,40,.4); }
+.badge.cor { background: rgba(255,255,255,.06); color: var(--ink-dim); border: 1px solid var(--line-strong); }
+.logoplate.dark img { mix-blend-mode: normal; }
