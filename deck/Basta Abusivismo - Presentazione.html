@@ -144,9 +144,9 @@
     <div class="eyebrow reveal"><span class="dot"></span> Il cerchio si chiude</div>
     <h2 class="heavy h1 reveal" style="--d:.06s">Le sentenze che contano.</h2>
     <div class="cards mt-l reveal" style="--d:.16s; grid-template-columns:repeat(3,1fr)">
-      <div class="glass bar blu"><span class="tag">Legittimazione attiva</span><div class="ttl mt-s">CdS 9672/2023</div><p>Il Consiglio di Stato riconosce a URITAXI il diritto di stare in giudizio per la categoria. Da soli no. Insieme sì.</p></div>
+      <div class="glass bar blu"><span class="tag">Legittimazione attiva</span><div class="ttl mt-s">CdS 9672/2023</div><p>Il Consiglio di Stato riconosce a URITAXI e FILT CGIL il diritto di stare in giudizio per la categoria. Da soli no. Insieme sì.</p></div>
       <div class="glass bar"><span class="tag">Vincolo territoriale</span><div class="ttl mt-s">Corte Cost. 56/2020 · 163/2025</div><p>La Consulta conferma che il vincolo è legittimo. I controlli sono “presidi adeguati”, non burocrazia.</p></div>
-      <div class="glass bar verde"><span class="tag">Le foto sono prova</span><div class="ttl mt-s">TAR Toscana 263/2023 · 903/2026</div><p>Il TAR indica alle associazioni le fotografie come prova dei veicoli NCC fuori territorio.</p></div>
+      <div class="glass bar verde"><span class="tag">Le foto sono prova</span><div class="ttl mt-s">TAR Toscana 263/2023</div><p>Il TAR indica alle associazioni le fotografie come prova dei veicoli NCC fuori territorio.</p></div>
     </div>
     <p class="sub korsiv mt-l reveal wide" style="--d:.3s; max-width:none">«...le associazioni potrebbero ricorrere a molti altri mezzi di prova, quali ad esempio delle fotografie...» — TAR Toscana 263/2023, pag. 4</p>
   </section>
@@ -170,15 +170,34 @@
   <section class="s" data-label="Marciana · effetto domino">
     <div class="eyebrow reveal"><span class="dot"></span> Il caso Marciana · Isola d'Elba</div>
     <h2 class="heavy h1 reveal" style="--d:.06s">Cade il primo tassello.<br><span class="c-rosso">Parte la reazione a catena.</span></h2>
-    <div class="domino mt-l">
-      <div class="tile fall hot" style="--fd:.2s"><span>Marciana 1</span></div>
-      <div class="tile fall hot" style="--fd:.5s"><span>Marciana 2</span></div>
-      <div class="tile fall hot" style="--fd:.8s"><span>Marciana 6</span></div>
-      <div class="tile fall" style="--fd:1.1s"><span>altre autorizz.</span></div>
-      <div class="tile fall" style="--fd:1.5s"><span>Impruneta</span></div>
-      <div class="tile fall" style="--fd:1.8s"><span>Barberino V.E.</span></div>
-      <div class="tile fall" style="--fd:2.1s"><span>Colle Val d'Elsa</span></div>
-      <div class="tile fall" style="--fd:2.4s"><span>altri Comuni</span></div>
+    <style>
+      .dom { margin-top: 40px; }
+      .domline { display: flex; gap: 96px; align-items: flex-end; }
+      .dcol { display: flex; flex-direction: column; align-items: center; width: 120px; }
+      .dtrack { height: 210px; display: flex; align-items: flex-end; }
+      .dtile { width: 56px; height: 200px; border-radius: 10px; border: 1px solid rgba(255,255,255,.06);
+        background: linear-gradient(180deg, #2b313d, #161922); box-shadow: 0 22px 46px rgba(0,0,0,.55);
+        transform-origin: bottom center; }
+      .dcol.hot .dtile { background: linear-gradient(180deg, var(--rosso), var(--rosso-deep));
+        border-color: transparent; box-shadow: 0 22px 54px rgba(216,21,40,.5); }
+      .dlabel { margin-top: 40px; font-size: 20px; font-weight: 800; color: var(--ink-dim);
+        text-align: center; max-width: 160px; line-height: 1.18; }
+      .dcol.hot .dlabel { color: #fff; }
+      .dlabel small { display:block; font-weight:600; opacity:.75; font-size:15px; margin-top:3px; }
+      @media (prefers-reduced-motion: no-preference) {
+        [data-deck-active] .dtile { animation: topple .5s cubic-bezier(.5,.05,.9,.35) forwards;
+          animation-delay: calc(var(--i,0) * .34s + .4s); }
+      }
+      @keyframes topple { from { transform: rotate(0); } to { transform: rotate(86deg); } }
+    </style>
+    <div class="dom">
+      <div class="domline">
+        <div class="dcol hot"><div class="dtrack"><div class="dtile" style="--i:0"></div></div><div class="dlabel">Marciana<small>titoli 1 · 2 · 6</small></div></div>
+        <div class="dcol"><div class="dtrack"><div class="dtile" style="--i:1"></div></div><div class="dlabel">Altri titoli NCC</div></div>
+        <div class="dcol"><div class="dtrack"><div class="dtile" style="--i:2"></div></div><div class="dlabel">Decadenze a catena</div></div>
+        <div class="dcol"><div class="dtrack"><div class="dtile" style="--i:3"></div></div><div class="dlabel">Esclusione dai bandi</div></div>
+        <div class="dcol hot"><div class="dtrack"><div class="dtile" style="--i:4"></div></div><div class="dlabel">Taxi mascherato fermato</div></div>
+      </div>
     </div>
     <div class="band mt-l reveal" style="--d:.3s; max-width:1500px">Dall'esposto URITAXI e FILT CGIL alle revoche confermate dal TAR: quando cade il primo titolo documentale, decadenze ed esclusioni dai bandi proseguono di territorio in territorio.</div>
   </section>
@@ -188,7 +207,7 @@
     <div class="eyebrow reveal"><span class="dot"></span> Toscana e oltre · dati dai fascicoli, verificabili comune per comune</div>
     <h2 class="heavy h1 reveal" style="--d:.06s">I casi, a scendere.</h2>
     <div id="casi-reg" class="casi-grid reveal mt-m" style="--d:.16s"></div>
-    <div class="band reveal mt-m" style="--d:.34s; max-width:1660px"><b>44 casi negli ultimi 6 mesi</b> · 6 con revoca o decadenza già definitiva — gli altri, procedimenti in corso.</div>
+    <div class="band reveal mt-m" id="casi-band" style="--d:.34s; max-width:1660px"></div>
   </section>
 
   <!-- 12 · UBER MILANO -->
@@ -202,7 +221,8 @@
         <div class="glass bar"><div class="ttl">Trib. Milano 8359/2015</div><p>UberPop bloccata: concorrenza sleale verso i taxi.</p></div>
         <div class="glass bar blu"><div class="ttl">TAR Lombardia 860/2016</div><p>Lo strumento tecnologico non cancella le regole del trasporto non di linea.</p></div>
       </div>
-      <p class="lead reveal" style="--d:.26s">La legge è la stessa ovunque: <b class="c-blu">L. 21/1992</b>. Milano lo ha già dimostrato.</p>
+      <div class="band reveal" style="--d:.22s; max-width:1200px">Uber non può fornire servizi a un NCC in sosta sulla pubblica via: <b>lo smartphone non è una sede, né una rimessa.</b></div>
+      <p class="lead reveal" style="--d:.32s">La legge è la stessa ovunque: <b class="c-blu">L. 21/1992</b>. Milano lo ha già dimostrato.</p>
     </div>
   </section>
 
@@ -268,9 +288,8 @@
 <script type="application/json" id="casi-data">
 [
 {"c":"Marciana","p":"LI","s":"def"},{"c":"Montepulciano","p":"SI","s":"def"},{"c":"Capalbio","p":"GR","s":"def"},{"c":"Villafranca in Lunigiana","p":"MS","s":"def"},{"c":"Scarperia e San Piero","p":"FI","s":"def"},{"c":"Palaia","p":"PI","s":"def"},
-{"c":"Bibbiena","p":"AR","s":"cor"},{"c":"Castelnuovo Berardenga","p":"SI","s":"cor"},{"c":"Firenze","p":"FI","s":"cor"},{"c":"Monte San Savino","p":"AR","s":"cor"},{"c":"Colle Val d'Elsa","p":"SI","s":"cor"},{"c":"Barberino Tavarnelle","p":"FI","s":"cor"},{"c":"Gambassi Terme","p":"FI","s":"cor"},{"c":"Impruneta","p":"FI","s":"cor"},{"c":"Certaldo","p":"FI","s":"cor"},{"c":"Cavriglia","p":"AR","s":"cor"},{"c":"Bibbona","p":"LI","s":"cor"},{"c":"Borgo San Lorenzo","p":"FI","s":"cor"},{"c":"Castelfiorentino","p":"FI","s":"cor"},{"c":"Prato","p":"PO","s":"cor"},{"c":"San Giuliano Terme","p":"PI","s":"cor"},{"c":"Agliana","p":"PT","s":"cor"},{"c":"Volterra","p":"PI","s":"cor"},{"c":"Cecina","p":"LI","s":"cor"},{"c":"Signa","p":"FI","s":"cor"},{"c":"Bagni di Lucca","p":"LU","s":"cor"},{"c":"Montemurlo","p":"PO","s":"cor"},{"c":"Pistoia","p":"PT","s":"cor"},{"c":"Scarlino","p":"GR","s":"cor"},{"c":"Castelfranco Piandiscò","p":"AR","s":"cor"},{"c":"Buggiano","p":"PT","s":"cor"},{"c":"Castel Focognano","p":"AR","s":"cor"},
-{"c":"Como","p":"CO","s":"cor"},{"c":"Saronno","p":"VA","s":"cor"},{"c":"Almè","p":"BG","s":"cor"},{"c":"Ghedi","p":"BS","s":"cor"},
-{"c":"Ravenna","p":"RA","s":"cor"},{"c":"Monte Copiolo","p":"RN","s":"cor"},{"c":"Sant'Agata Feltria","p":"RN","s":"cor"},{"c":"Gemmano","p":"RN","s":"cor"},
+{"c":"Bibbiena","p":"AR","s":"cor"},{"c":"Castelnuovo Berardenga","p":"SI","s":"cor"},{"c":"Firenze","p":"FI","s":"cor"},{"c":"Monte San Savino","p":"AR","s":"cor"},{"c":"Colle Val d'Elsa","p":"SI","s":"cor"},{"c":"Barberino Tavarnelle","p":"FI","s":"cor"},{"c":"Gambassi Terme","p":"FI","s":"cor"},{"c":"Impruneta","p":"FI","s":"cor"},{"c":"Certaldo","p":"FI","s":"cor"},{"c":"Cavriglia","p":"AR","s":"cor"},{"c":"Bibbona","p":"LI","s":"cor"},{"c":"Borgo San Lorenzo","p":"FI","s":"cor"},{"c":"Castelfiorentino","p":"FI","s":"cor"},{"c":"Prato","p":"PO","s":"cor"},{"c":"San Giuliano Terme","p":"PI","s":"cor"},{"c":"Agliana","p":"PT","s":"cor"},{"c":"Volterra","p":"PI","s":"cor"},{"c":"Cecina","p":"LI","s":"cor"},{"c":"Signa","p":"FI","s":"cor"},{"c":"Bagni di Lucca","p":"LU","s":"def"},{"c":"Montemurlo","p":"PO","s":"cor"},{"c":"Pistoia","p":"PT","s":"cor"},{"c":"Scarlino","p":"GR","s":"cor"},{"c":"Castelfranco Piandiscò","p":"AR","s":"cor"},{"c":"Buggiano","p":"PT","s":"cor"},{"c":"Castel Focognano","p":"AR","s":"cor"},
+{"c":"Ravenna","p":"RA","s":"cor"},{"c":"Monte Copiolo","p":"RN","s":"cor"},{"c":"Sant'Agata Feltria","p":"RN","s":"def"},{"c":"Gemmano","p":"RN","s":"cor"},
 {"c":"Nettuno","p":"RM","s":"cor"},{"c":"Latina","p":"LT","s":"cor"},{"c":"Viterbo","p":"VT","s":"cor"},{"c":"Ginosa","p":"TA","s":"cor"},{"c":"Irsina","p":"MT","s":"cor"}
 ]
 </script>
@@ -281,12 +300,16 @@
   if (!reg) return;
   var data = [];
   try { data = JSON.parse(document.getElementById('casi-data').textContent); } catch (e) {}
+  data.sort(function (a, b) { return (a.s === 'def' ? 0 : 1) - (b.s === 'def' ? 0 : 1); });
   reg.innerHTML = data.map(function (d) {
     var badge = d.s === 'def'
       ? '<span class="badge def">Definitivo</span>'
       : '<span class="badge cor">In corso</span>';
     return '<div class="caso"><span class="nm">' + d.c + '</span><span class="pv">' + d.p + '</span>' + badge + '</div>';
   }).join('');
+  var tot = data.length, def = data.filter(function (d) { return d.s === 'def'; }).length;
+  var band = document.getElementById('casi-band');
+  if (band) band.innerHTML = '<b>' + tot + ' casi seguiti</b> · ' + def + ' con revoca o decadenza già definitiva — gli altri, procedimenti in corso.';
 })();
 </script>
 
