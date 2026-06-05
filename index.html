@@ -137,6 +137,11 @@
   .reg th,.reg td{text-align:left; padding:.55em .7em; border-bottom:1px solid rgba(0,0,0,.12)}
   .reg th{color:var(--rosso); text-transform:uppercase; letter-spacing:.08em; font-size:.8em}
   .reg td b{color:var(--rosso)}
+  .st{display:inline-block; padding:.12em .6em; border-radius:11px; font-size:.74em; font-weight:700; white-space:nowrap}
+  .st.def{background:var(--rosso); color:#fff}
+  .st.cor{background:#e2ddd6; color:#555}
+  .dark .st.cor{background:#3a3a3a; color:#cfc9c0}
+  .reg tr.isdef td{background:rgba(200,16,46,.06)}
 
   /* deep-dive card */
   .deep h2 small{display:block; color:var(--grigio); font-size:.4em; letter-spacing:.05em; margin-top:.3em}
@@ -284,6 +289,21 @@ let REVOCHE = [
    esito:"Revoche/decadenze — confermate dal TAR (903/2026, 396/2026)"}
 ];
 let SENTENZE = []; let NORME = []; let STAMPA = [];
+/* casi (definitivi + in corso). Fallback inline ridotto per uso offline da file://; su server casi.json carica l'elenco completo. */
+let CASI = [
+  {comune:"Marciana",provincia:"LI",regione:"Toscana",titoli:7,stato:"definitivo",data:"2026-05-11",esito:"Decadenze confermate (TAR Toscana 903/2026 e 396/2026)"},
+  {comune:"Montepulciano",provincia:"SI",regione:"Toscana",titoli:null,stato:"definitivo",data:"2026-04-01",esito:"Decadenza confermata (TAR Toscana 875/2026)"},
+  {comune:"Capalbio",provincia:"GR",regione:"Toscana",titoli:null,stato:"definitivo",data:"2026-04-01",esito:"Revoca confermata (TAR Toscana 888/2026)"},
+  {comune:"Villafranca in Lunigiana",provincia:"MS",regione:"Toscana",titoli:null,stato:"definitivo",data:"2026-03-22",esito:"Revoca confermata (TAR Toscana 1104/2026)"},
+  {comune:"Scarperia e San Piero",provincia:"FI",regione:"Toscana",titoli:1,stato:"definitivo",data:"2025-12-18",esito:"Decadenza confermata (TAR Toscana 740/2025)"},
+  {comune:"Palaia",provincia:"PI",regione:"Toscana",titoli:null,stato:"definitivo",data:"2022-07-05",esito:"Revoca comunale (ord. 07/PA)"},
+  {comune:"Bibbiena",provincia:"AR",regione:"Toscana",titoli:null,stato:"in_corso",data:"2026-05-29",esito:"Procedimento in corso"},
+  {comune:"Firenze",provincia:"FI",regione:"Toscana",titoli:null,stato:"in_corso",data:"2026-05-25",esito:"Procedimenti in corso"},
+  {comune:"Agliana",provincia:"PT",regione:"Toscana",titoli:3,stato:"in_corso",data:"2026-05-04",esito:"3 NCC; memoria ex art. 10"},
+  {comune:"Como",provincia:"CO",regione:"Lombardia",titoli:2,stato:"in_corso",data:"2026-04-24",esito:"Sospensione dal ruolo (autorizzazioni 1 e 29, ZTL Milano)"},
+  {comune:"Saronno",provincia:"VA",regione:"Lombardia",titoli:null,stato:"in_corso",data:"2026-04-04",esito:"In corso"},
+  {comune:"Ravenna",provincia:"RA",regione:"Emilia-Romagna",titoli:null,stato:"in_corso",data:"2026-06-01",esito:"In corso"}
+];
 
 /* === DURATE modalità VETRINA (secondi per scena). Modificabili. === */
 const SCENE_DURATIONS = { default:9, "s3":7, "s10":11, "deep":7 };
@@ -380,17 +400,17 @@ function scenesDef(){ return [
     <div data-anim style="--i:1"><div class="counter" data-count="15">0</div><div class="clab">anni di metodo (2011–2026) · a Firenze da 10</div></div>
     <div data-anim style="--i:2"><div class="counter" data-count="__COMUNI__">0</div><div class="clab">comuni trattati dal 2012, dalla Sicilia a Milano</div></div>
     <div data-anim style="--i:3"><div class="counter" data-count="__ATTI__">0</div><div class="clab">atti prodotti __ATTILAB__</div></div>
-    <div data-anim style="--i:4"><div class="counter" data-count="__PROC__">0</div><div class="clab">procedimenti in corso in __COMC__ comuni, anche in Lombardia</div></div>
+    <div data-anim style="--i:4"><div class="counter" data-count="__CASI6__">0</div><div class="clab">casi negli ultimi 6 mesi: revoche, decadenze, procedimenti</div></div>
   </div>
-  <div class="band" data-anim style="--i:5">Procedimenti aperti anche in Lombardia: Como, Saronno, Trescore Cremasco. Ogni revoca è documentata caso per caso. Dati al __DATA__, verificabili atto per atto.</div>`,
+  <div class="band" data-anim style="--i:5">Dalla Toscana a tutta Italia — anche in Lombardia: Como, Saronno, Trescore Cremasco. Ogni caso ha un comune, una data, un atto. Dati al __DATA__, verificabili.</div>`,
   notes:"I numeri sono verificabili atto per atto. Non arrotondare a voce. La riga sulla Lombardia avvicina il dato a Milano."},
 
-{id:"s9",theme:"light",title:"Non parole: revoche",parent_for:"revoche",html:`
-  <h2 class="heavy" data-anim>Non parole: revoche.</h2>
-  <p class="sub" data-anim style="--i:1">Ogni riga è un titolo NCC tolto o decaduto. Con comune, data e provvedimento.</p>
-  <div data-anim style="--i:2; width:100%"><table class="reg" id="regrev"><thead><tr><th>Comune</th><th>Titoli</th><th>Data</th><th>Esito</th></tr></thead><tbody></tbody></table></div>
-  <div class="band" data-anim style="--i:3; margin-top:.8em"><span id="revtot">[in verifica]</span> titoli revocati o decaduti, documentati caso per caso.</div>`,
-  notes:"NON dire «decine e decine»: far parlare l'elenco. Se qualcuno sminuisce i risultati: «Quante revoche, quante sentenze? I numeri sono qui, verificabili.»"},
+{id:"s9",theme:"light",title:"I casi, a scendere",html:`
+  <h2 class="heavy" data-anim>I casi, a scendere.</h2>
+  <p class="sub" data-anim style="--i:1">Tutta la Toscana, e oltre. Revoche e decadenze <b>definitive</b> e procedimenti <b>in corso</b>: ogni riga è un'autorizzazione sotto esame.</p>
+  <div data-anim style="--i:2; width:100%"><table class="reg" id="regcasi"><thead><tr><th>Comune</th><th>Stato</th><th>Data</th><th>Esito</th></tr></thead><tbody></tbody></table></div>
+  <div class="band" data-anim style="--i:3; margin-top:.6em"><span id="casitot">[in verifica]</span></div>`,
+  notes:"Far parlare l'elenco, non l'aggettivo. «Oltre 30 casi in sei mesi»: definitivi + in corso. Le revoche definitive sono il sottoinsieme col bollino rosso. Se qualcuno sminuisce: «I numeri sono qui, comune per comune, verificabili.»"},
 
 {id:"s10",theme:"dark",title:"Il territorio diventa ostico",html:`
   <h1 class="heavy" data-anim style="font-size:clamp(32px,6vw,84px)">Il territorio diventa ostico.</h1>
@@ -526,8 +546,12 @@ async function loadData(){
   SENTENZE=await tryJson('sentenze.json',SENTENZE);
   NORME=await tryJson('norme.json',NORME);
   STAMPA=await tryJson('stampa.json',STAMPA);
-  const tit = REVOCHE.reduce((a,r)=> a + (Number(r.n_titoli)||0), 0);
-  DATI.revoche_totale = tit ? (tit + (REVOCHE.some(r=>r.n_titoli==null)?"+":"")) : "[in verifica]";
+  CASI=await tryJson('casi.json',CASI);
+  // conteggi casi
+  DATI.casi_definitivi = CASI.filter(c=>c.stato==='definitivo').length;
+  DATI.casi_6mesi = CASI.filter(c=> c.data && c.data >= '2025-12-01').length;
+  const tit = CASI.filter(c=>c.stato==='definitivo').reduce((a,c)=> a + (Number(c.titoli)||0), 0);
+  DATI.titoli_definitivi = tit ? (tit + (CASI.some(c=>c.stato==='definitivo'&&c.titoli==null)?"+":"")) : "[in verifica]";
 }
 
 function thumbHTML(img,cap){
@@ -581,7 +605,7 @@ function fillNumbers(html){
     .replaceAll('__COMUNI__', String(DATI.comuni_trattati).replace(/\D/g,'')||'0')
     .replaceAll('__ATTI__', String(DATI.atti_periodo).replace(/\D/g,'')||'0')
     .replaceAll('__ATTILAB__', DATI.atti_periodo_label||'')
-    .replaceAll('__REVOCHE__', /\d/.test(DATI.revoche_totale)?DATI.revoche_totale:'0')
+    .replaceAll('__CASI6__', DATI.casi_6mesi!=null?DATI.casi_6mesi:'0')
     .replaceAll('__PROC__', DATI.procedimenti_in_corso)
     .replaceAll('__COMC__', DATI.comuni_in_corso)
     .replaceAll('__DATA__', DATI.data_aggiornamento);
@@ -608,12 +632,20 @@ function build(){
   MAIN=SLIDES.map((s,i)=>s.deep?-1:i).filter(i=>i>=0);
   // suffisso "+": rimetti il + dopo i count se il dato lo prevede
   buildTOC();
-  // popola registro revoche
-  const tb=stage.querySelector('#regrev tbody');
-  if(tb){ REVOCHE.forEach(r=>{ const tr=document.createElement('tr');
-    tr.innerHTML=`<td><b>${r.comune}</b>${r.provincia?' ('+r.provincia+')':''}</td><td>${r.n_titoli||'-'}</td><td>${r.data||'-'}</td><td>${r.esito||''}</td>`;
-    tb.appendChild(tr);}); }
-  const rt=stage.querySelector('#revtot'); if(rt) rt.textContent=DATI.revoche_totale;
+  // popola registro casi (definitivi in cima, poi in corso; entrambi per data desc)
+  const tb=stage.querySelector('#regcasi tbody');
+  if(tb){
+    const ord={definitivo:0,in_corso:1,archiviato:2};
+    const rows=[...CASI].sort((a,b)=> (ord[a.stato]-ord[b.stato]) || (b.data||'').localeCompare(a.data||''));
+    rows.forEach(c=>{ const def=c.stato==='definitivo'; const tr=document.createElement('tr');
+      if(def) tr.className='isdef';
+      const badge = def?'<span class="st def">DEFINITIVO</span>':'<span class="st cor">in corso</span>';
+      const tit = c.titoli?` · ${c.titoli} tit.`:'';
+      tr.innerHTML=`<td><b>${c.comune}</b>${c.provincia?' ('+c.provincia+')':''}${tit}</td><td>${badge}</td><td>${c.data||'-'}</td><td>${c.esito||''}</td>`;
+      tb.appendChild(tr);});
+  }
+  const ct=stage.querySelector('#casitot');
+  if(ct) ct.innerHTML=`<b>${DATI.casi_6mesi} casi negli ultimi 6 mesi.</b> ${DATI.casi_definitivi} con revoca o decadenza già definitiva — gli altri, procedimenti in corso.`;
 }
 
 function buildTOC(){

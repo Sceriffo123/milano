@@ -162,17 +162,17 @@ Non solo testo: ogni scena chiave deve avere un elemento visivo forte che dia "l
 - **15** anni di attività continuativa (2011–2026)
 - **[comuni_trattati]** comuni trattati in tutta Italia dal 2012, dalla Sicilia a Milano
 - **[atti_periodo]** atti prodotti [atti_periodo_label]
-- **[procedimenti_in_corso]** procedimenti in corso in [comuni_in_corso] comuni, anche in Lombardia
-Riga sotto: *Procedimenti aperti anche in Lombardia: Como, Saronno, Trescore Cremasco. Ogni revoca è documentata caso per caso. Dati al [data_aggiornamento], verificabili atto per atto.*
-> NOTA: NON usare un "totale revoche" come quarto contatore (rischio di numero gonfiato). Le revoche si mostrano caso per caso nella Scena 9. Il quarto contatore è "procedimenti in corso".
+- **[casi negli ultimi 6 mesi, calcolato da casi.json]** casi negli ultimi 6 mesi: revoche, decadenze, procedimenti
+Riga sotto: *Dalla Toscana a tutta Italia — anche in Lombardia: Como, Saronno, Trescore Cremasco. Ogni caso ha un comune, una data, un atto. Dati al [data_aggiornamento], verificabili.*
+> NOTA: NON usare un "totale revoche" come quarto contatore (rischio di numero gonfiato). Il quarto contatore è "casi negli ultimi 6 mesi" (definitivi + in corso, ~44), calcolato da casi.json. Le revoche definitive (sottoinsieme) si vedono col bollino rosso nella Scena 9.
 - **Animazione:** count-up da 0 al valore, uno alla volta. La riga Lombardia per ultima, evidenziata.
 
-### Scena 9 — Le revoche, una per una (chiara) — NUOVA, dà sostanza ai numeri
-- Titolo: **"Non parole: revoche."** · Sottotitolo: *Ogni riga è un titolo NCC tolto o decaduto. Con comune, data e provvedimento.*
-- **Tabella/elenco scorrevole** dei provvedimenti realmente ottenuti (una riga = Comune · n° titoli · data · esito). Popolare da `assets/revoche.json` (vedi §6). Esempio di riga: *Marciana (LI) — 7 titoli NCC — 30 giugno 2025 — revoca/decadenza, confermata dal TAR.*
-- Totale in basso: **[somma dei titoli da revoche.json] titoli revocati o decaduti, documentati caso per caso** (non un numero scritto a mano).
-- **Animazione:** le righe si imprimono dall'alto come un registro che si compila; il totale conta a salire.
-- *Nota per il designer: NON scrivere "decine e decine" come testo; il senso di quantità deve nascere dall'elenco che scorre.*
+### Scena 9 — I casi, a scendere (chiara) — l'elenco completo, non solo Marciana
+- Titolo: **"I casi, a scendere."** · Sottotitolo: *Tutta la Toscana, e oltre. Revoche e decadenze definitive e procedimenti in corso: ogni riga è un'autorizzazione sotto esame.*
+- **Tabella/registro scorrevole** popolato da `assets/casi.json` (vedi §6). Una riga = Comune (prov.) · **STATO** · data · esito. Lo **STATO** è un bollino: **DEFINITIVO** (rosso) per revoca/decadenza già ottenuta o confermata da sentenza; **in corso** (grigio) per istanza/sollecito/diffida/ricorso pendente. Ordina: prima i DEFINITIVI, poi gli IN CORSO, entrambi per data decrescente. Evidenzia le righe DEFINITIVO.
+- Banda in basso (calcolata, non scritta a mano): **"[N] casi negli ultimi 6 mesi. [D] con revoca o decadenza già definitiva — gli altri, procedimenti in corso."** (Dai dati attuali: ~44 casi in 6 mesi, 6 definitivi.)
+- **REGOLA FATTI:** "definitivo" SOLO se c'è revoca/decadenza adottata o sentenza propria del comune (Marciana, Scarperia, Montepulciano, Capalbio, Villafranca, Palaia). I solleciti che *citano* una sentenza altrui (es. Cavriglia, Barberino, Buggiano che citano la 903/2026 di Marciana) restano **in corso**. Non gonfiare: "oltre 30 casi in 6 mesi" è vero e verificabile; "30 autorizzazioni revocate" NO.
+- **Animazione:** le righe si imprimono dall'alto come un registro che si compila; i totali in banda contano a salire.
 
 ### Scena 10 — L'effetto deterrenza (scura) — NUOVA, il risultato più alto
 - Titolo: **"Il territorio diventa ostico."**
@@ -254,7 +254,8 @@ Sono schede di dettaglio collegate alle scene. In **modalità Relatore** si ragg
 
 **Dati da file esterni** (così Marco li aggiorna senza toccare l'HTML):
 - `assets/sentenze.json` — array di pronunce: `{id, organo, numero, anno, comune, oggetto, massima_breve, fonte_pdf, immagine}`.
-- `assets/revoche.json` — array di provvedimenti: `{comune, provincia, n_titoli, data, esito, riferimento_atto}`.
+- `assets/casi.json` — array di TUTTI i casi (Scena 9): `{comune, provincia, regione, titoli, stato: "definitivo|in_corso|archiviato", data, esito}`. È la fonte del registro "a scendere" e dei conteggi.
+- `assets/revoche.json` — (legacy) sottoinsieme dei soli definitivi; `casi.json` lo supera.
 - `assets/norme.json` — array di norme: `{fonte, articolo, testo_breve}`.
 - `assets/stampa.json` — array di articoli: `{testata, data, titolo, immagine}`.
 
@@ -304,7 +305,7 @@ Mai rispondere alla persona, sempre ai fatti ("I protocolli e le sentenze sono p
 
 # APPENDICE — DATI REALI DA INSERIRE NEL CODICE
 
-> Dati verificati. NON modificarli "a occhio". Dove un campo è vuoto o "[estratto da inserire]", lascia un placeholder etichettato. I ritagli delle sentenze sono SCREENSHOT reali forniti da Marco.
+> Dati verificati. NON modificarli "a occhio". Dove un campo è vuoto o "[estratto da inserire]", placeholder etichettato. I ritagli delle sentenze sono SCREENSHOT reali forniti da Marco.
 
 ## dati.json
 ```json
@@ -320,33 +321,54 @@ Mai rispondere alla persona, sempre ai fatti ("I protocolli e le sentenze sono p
 }
 ```
 
-## revoche.json
+## casi.json
 ```json
 [
-  {
-    "comune": "Marciana",
-    "provincia": "LI",
-    "n_titoli": 7,
-    "data": "2025-06-30",
-    "esito": "Revoche/decadenze — confermate dal TAR Toscana (903/2026, 396/2026)",
-    "riferimento_atto": "Esposto URITAXI 13/10/2024; provvedimenti comunali 27 e 30/06/2025"
-  },
-  {
-    "comune": "Scarperia e San Piero",
-    "provincia": "FI",
-    "n_titoli": 1,
-    "data": "2024-09-04",
-    "esito": "Decadenza confermata dal TAR Toscana (740/2025)",
-    "riferimento_atto": "Provvedimento comunale prot. 15780/2024 — autorizzazione n. 62/2012 (SkyRoad236)"
-  },
-  {
-    "comune": "Palaia",
-    "provincia": "PI",
-    "n_titoli": null,
-    "data": "2022-07-05",
-    "esito": "Revoca confermata dal Comune",
-    "riferimento_atto": "Ordinanza n. 07/PA del 05/07/2022 (Catanese) — citata in nota Comune di Palaia 15/05/2026"
-  }
+  {"comune":"Marciana","provincia":"LI","regione":"Toscana","titoli":7,"stato":"definitivo","data":"2026-05-11","esito":"Decadenze confermate (TAR Toscana 903/2026 e 396/2026)"},
+  {"comune":"Montepulciano","provincia":"SI","regione":"Toscana","titoli":null,"stato":"definitivo","data":"2026-04-01","esito":"Decadenza confermata (TAR Toscana 875/2026)"},
+  {"comune":"Capalbio","provincia":"GR","regione":"Toscana","titoli":null,"stato":"definitivo","data":"2026-04-01","esito":"Revoca confermata (TAR Toscana 888/2026)"},
+  {"comune":"Villafranca in Lunigiana","provincia":"MS","regione":"Toscana","titoli":null,"stato":"definitivo","data":"2026-03-22","esito":"Revoca confermata (TAR Toscana 1104/2026)"},
+  {"comune":"Scarperia e San Piero","provincia":"FI","regione":"Toscana","titoli":1,"stato":"definitivo","data":"2025-12-18","esito":"Decadenza confermata (TAR Toscana 740/2025) — SkyRoad236"},
+  {"comune":"Palaia","provincia":"PI","regione":"Toscana","titoli":null,"stato":"definitivo","data":"2022-07-05","esito":"Revoca comunale (ord. 07/PA)"},
+  {"comune":"Bibbiena","provincia":"AR","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-29","esito":"Procedimento in corso; riscontri"},
+  {"comune":"Castelnuovo Berardenga","provincia":"SI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-25","esito":"Istanza e memoria integrativa"},
+  {"comune":"Firenze","provincia":"FI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-25","esito":"Procedimenti in corso"},
+  {"comune":"Monte San Savino","provincia":"AR","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-25","esito":"Procedimento in corso"},
+  {"comune":"Colle Val d'Elsa","provincia":"SI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-20","esito":"Sollecito"},
+  {"comune":"Barberino Tavarnelle","provincia":"FI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-19","esito":"Sollecito"},
+  {"comune":"Gambassi Terme","provincia":"FI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-16","esito":"In corso"},
+  {"comune":"Impruneta","provincia":"FI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-16","esito":"In corso"},
+  {"comune":"Certaldo","provincia":"FI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-15","esito":"In corso"},
+  {"comune":"Cavriglia","provincia":"AR","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-14","esito":"Sollecito (cita TAR 903/2026)"},
+  {"comune":"Bibbona","provincia":"LI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-13","esito":"Istanza"},
+  {"comune":"Borgo San Lorenzo","provincia":"FI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-13","esito":"Istanza"},
+  {"comune":"Castelfiorentino","provincia":"FI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-10","esito":"Diffida"},
+  {"comune":"Prato","provincia":"PO","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-07","esito":"In corso"},
+  {"comune":"San Giuliano Terme","provincia":"PI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-05-05","esito":"In corso"},
+  {"comune":"Agliana","provincia":"PT","regione":"Toscana","titoli":3,"stato":"in_corso","data":"2026-05-04","esito":"3 NCC; memoria ex art. 10 L. 241/1990"},
+  {"comune":"Volterra","provincia":"PI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-04-30","esito":"In corso"},
+  {"comune":"Cecina","provincia":"LI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-04-28","esito":"In corso"},
+  {"comune":"Signa","provincia":"FI","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-04-28","esito":"In corso"},
+  {"comune":"Bagni di Lucca","provincia":"LU","regione":"Toscana","titoli":3,"stato":"in_corso","data":"2026-04-22","esito":"Avvio procedimento revoca/decadenza (nn. 3, 11, 13)"},
+  {"comune":"Montemurlo","provincia":"PO","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-04-18","esito":"In corso (diffida Bacci-Filaci)"},
+  {"comune":"Pistoia","provincia":"PT","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-04-16","esito":"In corso"},
+  {"comune":"Scarlino","provincia":"GR","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-04-13","esito":"In corso"},
+  {"comune":"Castelfranco Piandiscò","provincia":"AR","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-04-03","esito":"Istanza"},
+  {"comune":"Buggiano","provincia":"PT","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-02-23","esito":"In corso (cita TAR 396/2026)"},
+  {"comune":"Castel Focognano","provincia":"AR","regione":"Toscana","titoli":null,"stato":"in_corso","data":"2026-02-15","esito":"Diffida"},
+  {"comune":"Como","provincia":"CO","regione":"Lombardia","titoli":2,"stato":"in_corso","data":"2026-04-24","esito":"Procedimento sospensione dal ruolo (autorizzazioni 1 e 29, ZTL Milano)"},
+  {"comune":"Saronno","provincia":"VA","regione":"Lombardia","titoli":null,"stato":"in_corso","data":"2026-04-04","esito":"In corso"},
+  {"comune":"Almè","provincia":"BG","regione":"Lombardia","titoli":1,"stato":"in_corso","data":"2026-04-28","esito":"NCC 4 (targa FZ260PH)"},
+  {"comune":"Ghedi","provincia":"BS","regione":"Lombardia","titoli":null,"stato":"in_corso","data":"2026-04-08","esito":"In corso"},
+  {"comune":"Ravenna","provincia":"RA","regione":"Emilia-Romagna","titoli":null,"stato":"in_corso","data":"2026-06-01","esito":"Procedimento in corso"},
+  {"comune":"Monte Copiolo","provincia":"RN","regione":"Emilia-Romagna","titoli":null,"stato":"in_corso","data":"2026-06-02","esito":"Procedimento in corso"},
+  {"comune":"Sant'Agata Feltria","provincia":"RN","regione":"Emilia-Romagna","titoli":null,"stato":"in_corso","data":"2026-05-11","esito":"In corso"},
+  {"comune":"Gemmano","provincia":"RN","regione":"Emilia-Romagna","titoli":null,"stato":"in_corso","data":"2026-04-16","esito":"In corso"},
+  {"comune":"Nettuno","provincia":"RM","regione":"Lazio","titoli":null,"stato":"in_corso","data":"2026-05-12","esito":"In corso"},
+  {"comune":"Latina","provincia":"LT","regione":"Lazio","titoli":null,"stato":"in_corso","data":"2026-05-12","esito":"In corso"},
+  {"comune":"Viterbo","provincia":"VT","regione":"Lazio","titoli":null,"stato":"in_corso","data":"2026-05-12","esito":"In corso"},
+  {"comune":"Ginosa","provincia":"TA","regione":"Puglia","titoli":null,"stato":"in_corso","data":"2026-05-12","esito":"In corso"},
+  {"comune":"Irsina","provincia":"MT","regione":"Basilicata","titoli":null,"stato":"in_corso","data":"2026-05-04","esito":"In corso"}
 ]
 ```
 
