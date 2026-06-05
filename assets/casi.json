@@ -35,9 +35,5 @@
   {"comune":"Ravenna","provincia":"RA","regione":"Emilia-Romagna","titoli":null,"stato":"in_corso","data":"2026-06-01","esito":"Procedimento in corso"},
   {"comune":"Monte Copiolo","provincia":"RN","regione":"Emilia-Romagna","titoli":null,"stato":"in_corso","data":"2026-06-02","esito":"Procedimento in corso"},
   {"comune":"Gemmano","provincia":"RN","regione":"Emilia-Romagna","titoli":null,"stato":"in_corso","data":"2026-04-16","esito":"In corso"},
-  {"comune":"Nettuno","provincia":"RM","regione":"Lazio","titoli":null,"stato":"in_corso","data":"2026-05-12","esito":"In corso"},
-  {"comune":"Latina","provincia":"LT","regione":"Lazio","titoli":null,"stato":"in_corso","data":"2026-05-12","esito":"In corso"},
-  {"comune":"Viterbo","provincia":"VT","regione":"Lazio","titoli":null,"stato":"in_corso","data":"2026-05-12","esito":"In corso"},
-  {"comune":"Ginosa","provincia":"TA","regione":"Puglia","titoli":null,"stato":"in_corso","data":"2026-05-12","esito":"In corso"},
   {"comune":"Irsina","provincia":"MT","regione":"Basilicata","titoli":null,"stato":"in_corso","data":"2026-05-04","esito":"In corso"}
 ]

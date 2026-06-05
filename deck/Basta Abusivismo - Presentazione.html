@@ -171,32 +171,36 @@
     <div class="eyebrow reveal"><span class="dot"></span> Il caso Marciana · Isola d'Elba</div>
     <h2 class="heavy h1 reveal" style="--d:.06s">Cade il primo tassello.<br><span class="c-rosso">Parte la reazione a catena.</span></h2>
     <style>
-      .dom { margin-top: 40px; }
-      .domline { display: flex; gap: 96px; align-items: flex-end; }
-      .dcol { display: flex; flex-direction: column; align-items: center; width: 120px; }
-      .dtrack { height: 210px; display: flex; align-items: flex-end; }
-      .dtile { width: 56px; height: 200px; border-radius: 10px; border: 1px solid rgba(255,255,255,.06);
-        background: linear-gradient(180deg, #2b313d, #161922); box-shadow: 0 22px 46px rgba(0,0,0,.55);
+      .dom2 { margin-top: 34px; }
+      .dom2-cols { position: relative; width: fit-content; margin: 0 auto; display: flex; gap: 60px; }
+      .dom2-line { position: absolute; left: -40px; right: -40px; top: 200px; height: 5px; border-radius: 3px;
+        background: linear-gradient(90deg, transparent, var(--line-strong) 5%, var(--line-strong) 95%, transparent); z-index: 0; }
+      .col2 { position: relative; z-index: 1; width: 120px; display: flex; flex-direction: column; align-items: center; }
+      .brickbox { height: 200px; display: flex; align-items: flex-end; }
+      .brick { width: 52px; height: 196px; border-radius: 8px; border: 1px solid rgba(255,255,255,.06);
+        background: linear-gradient(180deg, #2c323e, #161922); box-shadow: 0 14px 30px rgba(0,0,0,.5);
         transform-origin: bottom center; }
-      .dcol.hot .dtile { background: linear-gradient(180deg, var(--rosso), var(--rosso-deep));
-        border-color: transparent; box-shadow: 0 22px 54px rgba(216,21,40,.5); }
-      .dlabel { margin-top: 40px; font-size: 20px; font-weight: 800; color: var(--ink-dim);
-        text-align: center; max-width: 160px; line-height: 1.18; }
-      .dcol.hot .dlabel { color: #fff; }
-      .dlabel small { display:block; font-weight:600; opacity:.75; font-size:15px; margin-top:3px; }
+      .col2.hot .brick { background: linear-gradient(180deg, var(--rosso), var(--rosso-deep)); border-color: transparent;
+        box-shadow: 0 14px 40px rgba(216,21,40,.5); }
+      .pin { width: 11px; height: 11px; border-radius: 50%; background: var(--rosso); margin: 16px 0 12px;
+        box-shadow: 0 0 14px var(--rosso); }
+      .col2 .t { font-size: 19px; font-weight: 800; color: var(--ink-dim); text-align: center; line-height: 1.16; }
+      .col2.hot .t { color: #fff; }
+      .col2 .t small { display: block; font-weight: 600; opacity: .75; font-size: 14px; margin-top: 2px; }
       @media (prefers-reduced-motion: no-preference) {
-        [data-deck-active] .dtile { animation: topple .5s cubic-bezier(.5,.05,.9,.35) forwards;
-          animation-delay: calc(var(--i,0) * .34s + .4s); }
+        [data-deck-active] .brick { animation: brickFall .42s cubic-bezier(.45,.04,.9,.4) forwards;
+          animation-delay: calc(var(--i,0) * .3s + .45s); }
       }
-      @keyframes topple { from { transform: rotate(0); } to { transform: rotate(86deg); } }
+      @keyframes brickFall { from { transform: rotate(0); } to { transform: rotate(84deg); } }
     </style>
-    <div class="dom">
-      <div class="domline">
-        <div class="dcol hot"><div class="dtrack"><div class="dtile" style="--i:0"></div></div><div class="dlabel">Marciana<small>titoli 1 · 2 · 6</small></div></div>
-        <div class="dcol"><div class="dtrack"><div class="dtile" style="--i:1"></div></div><div class="dlabel">Altri titoli NCC</div></div>
-        <div class="dcol"><div class="dtrack"><div class="dtile" style="--i:2"></div></div><div class="dlabel">Decadenze a catena</div></div>
-        <div class="dcol"><div class="dtrack"><div class="dtile" style="--i:3"></div></div><div class="dlabel">Esclusione dai bandi</div></div>
-        <div class="dcol hot"><div class="dtrack"><div class="dtile" style="--i:4"></div></div><div class="dlabel">Taxi mascherato fermato</div></div>
+    <div class="dom2">
+      <div class="dom2-cols">
+        <div class="dom2-line"></div>
+        <div class="col2 hot"><div class="brickbox"><div class="brick" style="--i:0"></div></div><span class="pin"></span><span class="t">Marciana<small>titoli 1 · 2 · 6</small></span></div>
+        <div class="col2"><div class="brickbox"><div class="brick" style="--i:1"></div></div><span class="pin"></span><span class="t">Altri titoli NCC</span></div>
+        <div class="col2"><div class="brickbox"><div class="brick" style="--i:2"></div></div><span class="pin"></span><span class="t">Decadenze a catena</span></div>
+        <div class="col2"><div class="brickbox"><div class="brick" style="--i:3"></div></div><span class="pin"></span><span class="t">Esclusione dai bandi</span></div>
+        <div class="col2 hot"><div class="brickbox"><div class="brick" style="--i:4"></div></div><span class="pin"></span><span class="t">Taxi mascherato fermato</span></div>
       </div>
     </div>
     <div class="band mt-l reveal" style="--d:.3s; max-width:1500px">Dall'esposto URITAXI e FILT CGIL alle revoche confermate dal TAR: quando cade il primo titolo documentale, decadenze ed esclusioni dai bandi proseguono di territorio in territorio.</div>
@@ -205,7 +209,7 @@
   <!-- 11 · I CASI, A SCENDERE -->
   <section class="s" data-label="I casi, a scendere">
     <div class="eyebrow reveal"><span class="dot"></span> Toscana e oltre · dati dai fascicoli, verificabili comune per comune</div>
-    <h2 class="heavy h1 reveal" style="--d:.06s">I casi, a scendere.</h2>
+    <h2 class="heavy h1 reveal" style="--d:.06s"><span class="c-rosso">2026</span> — I casi, a scendere.</h2>
     <div id="casi-reg" class="casi-grid reveal mt-m" style="--d:.16s"></div>
     <div class="band reveal mt-m" id="casi-band" style="--d:.34s; max-width:1660px"></div>
   </section>
@@ -248,7 +252,11 @@
       <div class="glass bar"><span class="tag">La rete lombarda</span><p class="mt-s">Collegare i procedimenti aperti — Como, Saronno, Trescore Cremasco — in un fronte regionale.</p></div>
       <div class="glass bar verde"><span class="tag">Lo standard nazionale</span><p class="mt-s">Un metodo replicabile, città per città, finché l'abusivismo non conviene più a nessuno.</p></div>
     </div>
-    <p class="lead korsiv mt-l reveal" style="--d:.3s">Quindici anni ci hanno portato fin qui. I prossimi dieci li scrivete voi, con noi.</p>
+    <style>
+      #tw-final .tw-caret { color: var(--rosso); font-weight: 400; animation: twblink 1s steps(1) infinite; }
+      @keyframes twblink { 50% { opacity: 0; } }
+    </style>
+    <p class="korsiv mt-l" id="tw-final" data-text="Quindici anni ci hanno portato fin qui. I prossimi dieci li scrivete voi, con noi." style="font-size:68px; line-height:1.16; max-width:24ch; font-weight:800; color:var(--ink); margin-top:44px"><span class="tw-text"></span><span class="tw-caret">|</span></p>
   </section>
 
   <!-- 14 · LA PROPOSTA -->
@@ -262,7 +270,7 @@
       </div>
       <div class="col center gap-s grow" style="--d:.2s">
         <span class="logoplate" style="padding:14px"><img src="assets/img/qr-webapp.png" alt="QR" style="width:272px;height:272px;display:block;image-rendering:pixelated"></span>
-        <span class="meta">Inquadra per aderire</span>
+        <span class="meta">Inquadra: rivedi e condividi · slide.gaaitalia.org</span>
       </div>
     </div>
     <div class="foot"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uritaxi.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span></span><span class="frontbar"></span><span class="fill"></span><span class="meta">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>
@@ -290,7 +298,7 @@
 {"c":"Marciana","p":"LI","s":"def"},{"c":"Montepulciano","p":"SI","s":"def"},{"c":"Capalbio","p":"GR","s":"def"},{"c":"Villafranca in Lunigiana","p":"MS","s":"def"},{"c":"Scarperia e San Piero","p":"FI","s":"def"},{"c":"Palaia","p":"PI","s":"def"},
 {"c":"Bibbiena","p":"AR","s":"cor"},{"c":"Castelnuovo Berardenga","p":"SI","s":"cor"},{"c":"Firenze","p":"FI","s":"cor"},{"c":"Monte San Savino","p":"AR","s":"cor"},{"c":"Colle Val d'Elsa","p":"SI","s":"cor"},{"c":"Barberino Tavarnelle","p":"FI","s":"cor"},{"c":"Gambassi Terme","p":"FI","s":"cor"},{"c":"Impruneta","p":"FI","s":"cor"},{"c":"Certaldo","p":"FI","s":"cor"},{"c":"Cavriglia","p":"AR","s":"cor"},{"c":"Bibbona","p":"LI","s":"cor"},{"c":"Borgo San Lorenzo","p":"FI","s":"cor"},{"c":"Castelfiorentino","p":"FI","s":"cor"},{"c":"Prato","p":"PO","s":"cor"},{"c":"San Giuliano Terme","p":"PI","s":"cor"},{"c":"Agliana","p":"PT","s":"cor"},{"c":"Volterra","p":"PI","s":"cor"},{"c":"Cecina","p":"LI","s":"cor"},{"c":"Signa","p":"FI","s":"cor"},{"c":"Bagni di Lucca","p":"LU","s":"def"},{"c":"Montemurlo","p":"PO","s":"cor"},{"c":"Pistoia","p":"PT","s":"cor"},{"c":"Scarlino","p":"GR","s":"cor"},{"c":"Castelfranco Piandiscò","p":"AR","s":"cor"},{"c":"Buggiano","p":"PT","s":"cor"},{"c":"Castel Focognano","p":"AR","s":"cor"},
 {"c":"Ravenna","p":"RA","s":"cor"},{"c":"Monte Copiolo","p":"RN","s":"cor"},{"c":"Sant'Agata Feltria","p":"RN","s":"def"},{"c":"Gemmano","p":"RN","s":"cor"},
-{"c":"Nettuno","p":"RM","s":"cor"},{"c":"Latina","p":"LT","s":"cor"},{"c":"Viterbo","p":"VT","s":"cor"},{"c":"Ginosa","p":"TA","s":"cor"},{"c":"Irsina","p":"MT","s":"cor"}
+{"c":"Irsina","p":"MT","s":"cor"}
 ]
 </script>
 <script>
@@ -367,6 +375,21 @@
   if ((location.hash || '').replace('#', '') === 'auto') {
     if (deck && deck.goTo) start(); else window.addEventListener('load', start);
   }
+})();
+</script>
+<script>
+/* Effetto macchina da scrivere sulla frase finale (scena "Dove arriveremo"). */
+(function () {
+  var el = document.getElementById('tw-final'); if (!el) return;
+  var txt = el.getAttribute('data-text') || '';
+  var span = el.querySelector('.tw-text');
+  var timer = null;
+  function reset() { if (timer) { clearInterval(timer); timer = null; } if (span) span.textContent = ''; }
+  function run() { reset(); var i = 0; timer = setInterval(function () { i++; span.textContent = txt.slice(0, i); if (i >= txt.length) { clearInterval(timer); timer = null; } }, 42); }
+  function check(slide) { if (slide && slide.getAttribute('data-label') === 'Dove arriveremo') { reset(); setTimeout(run, 450); } else { reset(); } }
+  var deck = document.querySelector('deck-stage');
+  if (deck) deck.addEventListener('slidechange', function (e) { check(e.detail && e.detail.slide); });
+  var act = document.querySelector('deck-stage>section[data-deck-active]'); if (act) check(act);
 })();
 </script>
 </body>
