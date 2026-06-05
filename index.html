@@ -351,16 +351,16 @@ function scenesDef(){ return [
     <div data-anim style="--i:1"><div class="counter" data-count="15">0</div><div class="clab">anni di attività continuativa (2011–2026)</div></div>
     <div data-anim style="--i:2"><div class="counter" data-count="__COMUNI__">0</div><div class="clab">comuni trattati dal 2012, dalla Sicilia a Milano</div></div>
     <div data-anim style="--i:3"><div class="counter" data-count="__ATTI__">0</div><div class="clab">atti prodotti __ATTILAB__</div></div>
-    <div data-anim style="--i:4"><div class="counter" data-count="__REVOCHE__">0</div><div class="clab">revoche e decadenze negli ultimi 12 mesi</div></div>
+    <div data-anim style="--i:4"><div class="counter" data-count="__PROC__">0</div><div class="clab">procedimenti in corso in __COMC__ comuni, anche in Lombardia</div></div>
   </div>
-  <div class="band" data-anim style="--i:5">E __PROC__ procedimenti in corso in __COMC__ comuni — anche in Lombardia: Como, Saronno, Trescore Cremasco. Dati al __DATA__, verificabili atto per atto.</div>`,
+  <div class="band" data-anim style="--i:5">Procedimenti aperti anche in Lombardia: Como, Saronno, Trescore Cremasco. Ogni revoca è documentata caso per caso. Dati al __DATA__, verificabili atto per atto.</div>`,
   notes:"I numeri sono verificabili atto per atto. Non arrotondare a voce. La riga sulla Lombardia avvicina il dato a Milano."},
 
 {id:"s9",theme:"light",title:"Non parole: revoche",parent_for:"revoche",html:`
   <h2 class="heavy" data-anim>Non parole: revoche.</h2>
   <p class="sub" data-anim style="--i:1">Ogni riga è un titolo NCC tolto o decaduto. Con comune, data e provvedimento.</p>
   <div data-anim style="--i:2; width:100%"><table class="reg" id="regrev"><thead><tr><th>Comune</th><th>Titoli</th><th>Data</th><th>Esito</th></tr></thead><tbody></tbody></table></div>
-  <div class="band" data-anim style="--i:3; margin-top:.8em">Totale: <span id="revtot">[in verifica]</span> provvedimenti.</div>`,
+  <div class="band" data-anim style="--i:3; margin-top:.8em"><span id="revtot">[in verifica]</span> titoli revocati o decaduti, documentati caso per caso.</div>`,
   notes:"NON dire «decine e decine»: far parlare l'elenco. Se qualcuno sminuisce i risultati: «Quante revoche, quante sentenze? I numeri sono qui, verificabili.»"},
 
 {id:"s10",theme:"dark",title:"Il territorio diventa ostico",html:`
@@ -494,7 +494,8 @@ async function loadData(){
   SENTENZE=await tryJson('sentenze.json',SENTENZE);
   NORME=await tryJson('norme.json',NORME);
   STAMPA=await tryJson('stampa.json',STAMPA);
-  DATI.revoche_totale = REVOCHE.length ? String(REVOCHE.length) : "[in verifica]";
+  const tit = REVOCHE.reduce((a,r)=> a + (Number(r.n_titoli)||0), 0);
+  DATI.revoche_totale = tit ? (tit + (REVOCHE.some(r=>r.n_titoli==null)?"+":"")) : "[in verifica]";
 }
 
 function thumbHTML(img,cap){

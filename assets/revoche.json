@@ -2,11 +2,10 @@
   {
     "comune": "Marciana",
     "provincia": "LI",
-    "n_titoli": 3,
+    "n_titoli": 7,
     "data": "2025-06-30",
-    "esito": "Decadenze confermate dal TAR Toscana (903/2026, 396/2026)",
-    "riferimento_atto": "Provvedimenti comunali 27 e 30/06/2025 (autorizzazioni nn. 1, 2, 6)",
-    "_verifica": "ATTENZIONE: i materiali presentazione indicavano 7 titoli; nei fascicoli locali risultano 3. Da confermare con Marco prima del 10/06."
+    "esito": "Revoche/decadenze — confermate dal TAR Toscana (903/2026, 396/2026)",
+    "riferimento_atto": "Esposto URITAXI 13/10/2024; provvedimenti comunali 27 e 30/06/2025"
   },
   {
     "comune": "Scarperia e San Piero",
@@ -22,7 +21,6 @@
     "n_titoli": null,
     "data": "2022-07-05",
     "esito": "Revoca confermata dal Comune",
-    "riferimento_atto": "Ordinanza n. 07/PA del 05/07/2022 (Catanese) — citata in nota Comune di Palaia 15/05/2026",
-    "_verifica": "Numero titoli non determinato dai fascicoli locali."
+    "riferimento_atto": "Ordinanza n. 07/PA del 05/07/2022 (Catanese) — citata in nota Comune di Palaia 15/05/2026"
   }
 ]
