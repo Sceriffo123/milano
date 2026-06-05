@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="presentations/cinematic/deck.css">
 <style>
   /* Loghi delle strisce più grandi e ben visibili (lo stemma deve leggersi). */
-  .logoplate.sm img { height: 96px !important; }
-  .logoplate.sm { padding: 12px 18px !important; }
+  .logoplate.sm img { height: 84px !important; }
+  .logoplate.sm { padding: 6px 9px !important; }
 </style>
 </head>
 <body>
@@ -41,7 +41,7 @@
     </div>
     <div class="foot">
       <span class="logostrip reveal" style="--d:.4s">
-        <span class="logoplate sm"><img src="assets/img/logo-uritaxi.png" alt="URITAXI"></span>
+        <span class="logoplate sm"><img src="assets/img/logo-uritaxi2.png" alt="URITAXI"></span>
         <span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span>
       </span>
       <span class="frontbar"></span>
@@ -65,13 +65,29 @@
   </section>
 
   <!-- 03 · 2014 STAMPA -->
-  <section class="s cine" data-label="2014 · Stampa">
-    <div class="fullbleed"><image-slot id="cine-stampa" class="duotone kenburns" placeholder="Foto: ritaglio di giornale / documenti protocollati / scrivania con atti" fit="cover"></image-slot></div>
-    <div class="vignette"></div>
-    <div class="col gap-m">
-      <div class="eyebrow reveal"><span class="dot"></span> 2014 · La stampa nazionale</div>
-      <h2 class="heavy h1 reveal" style="--d:.08s; max-width:18ch">Quando ancora<br>non ci credeva nessuno,<br><span class="grad">era già sui giornali.</span></h2>
-      <p class="lead reveal" style="--d:.2s">Evasione fiscale e danno erariale degli NCC fantasma: un'analisi diventata, dieci anni dopo, la base delle inchieste nazionali.</p>
+  <section class="s" data-label="2014 · Stampa">
+    <style>
+      .news img { height: 600px; max-height: 66vh; width: auto; border-radius: 8px; display: block;
+        box-shadow: 0 26px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08); }
+      .news .ph2b { width: 420px; height: 560px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+        text-align: center; background: #11141b; border: 1px dashed #444; color: #9a948b; font-weight: 700; padding: 24px; }
+      @media (prefers-reduced-motion: no-preference) {
+        [data-deck-active] .news img, [data-deck-active] .news .ph2b {
+          animation: newsIn .8s cubic-bezier(.2,.9,.3,1) both; animation-delay: .4s; }
+      }
+      @keyframes newsIn { from { opacity: 0; transform: translateY(30px) scale(.94) rotate(-1.5deg); } to { opacity: 1; transform: none; } }
+    </style>
+    <div class="eyebrow reveal"><span class="dot"></span> 2014 · La stampa nazionale</div>
+    <div class="row gap-l" style="align-items:center; margin-top:8px">
+      <div class="col gap-m fill" style="max-width:740px">
+        <h2 class="heavy h1 reveal" style="--d:.06s; max-width:18ch">Quando ancora non ci credeva nessuno,<br><span class="grad">era già sui giornali.</span></h2>
+        <p class="lead reveal" style="--d:.18s">Evasione fiscale e danno erariale degli NCC fantasma: un'analisi diventata, dieci anni dopo, la base delle inchieste nazionali.</p>
+        <div class="band reveal" style="--d:.26s">«La maxi evasione fiscale dei 3mila NCC fantasma» — Il Messaggero, 15 maggio 2014.</div>
+      </div>
+      <div class="col center grow news" style="--d:.2s">
+        <img src="assets/img/messaggero-2014.png" alt="Il Messaggero 15.05.2014" onerror="this.outerHTML='<div class=ph2b>Il Messaggero<br>15.05.2014</div>'">
+        <span class="meta" style="margin-top:12px">Il Messaggero · 15 maggio 2014</span>
+      </div>
     </div>
   </section>
 
@@ -81,8 +97,8 @@
     <div class="col center gap-m" style="text-align:center; align-items:center; max-width:none">
       <div class="eyebrow reveal"><span class="dot"></span> Dove tutto stava per cambiare</div>
       <h2 class="heavy giant rosso reveal" style="font-size:340px; margin:.02em 0">2017</h2>
-      <p class="lead reveal" style="--d:.12s; max-width:36ch">Una telefonata a uno dei maggiori rappresentanti della categoria. Messo in vivavoce e deriso davanti agli altri — perché insisteva sugli atti, sulle carte, sui protocolli.</p>
-      <p class="heavy korsiv c-rosso reveal" style="--d:.26s; font-size:108px; line-height:1; text-shadow:0 0 70px rgba(216,21,40,.4)">“Allora si rideva.”</p>
+      <p class="lead reveal" style="--d:.12s; max-width:38ch">Una telefonata a uno dei maggiori rappresentanti della categoria. Ci derideva, perché insistevamo sugli atti, sulle carte, sui protocolli. Poi ha scelto un percorso che non condividiamo.</p>
+      <p class="heavy korsiv c-rosso reveal" style="--d:.26s; font-size:108px; line-height:1; text-shadow:0 0 70px rgba(216,21,40,.4)">“Allora ci rideva.”</p>
     </div>
     <div class="foot center" style="left:152px; right:152px; justify-content:center; text-align:center">
       <span class="meta" style="margin:0 auto">Oggi i fatti hanno dato ragione al metodo: la storica cooperativa romana ha siglato l'accordo nazionale con Uber il <b style="color:var(--ink-dim)">24 maggio 2022</b>.</span>
@@ -107,7 +123,27 @@
     <div class="eyebrow reveal"><span class="dot"></span> Non una protesta</div>
     <h2 class="heavy h1 reveal" style="--d:.06s">La macchina giuridica.</h2>
     <p class="sub reveal" style="--d:.12s">Ogni passaggio è un atto protocollato, opponibile, verificabile.</p>
-    <div class="flow mt-l reveal" style="--d:.2s">
+    <style>
+      .flow.grad .step { border-top-width: 8px; transition: none; }
+      .flow.grad .step:nth-child(1) { border-top-color:#2F88D4 !important; } .flow.grad .step:nth-child(1) .n{ color:#2F88D4; }
+      .flow.grad .step:nth-child(2) { border-top-color:#5E7BC8 !important; } .flow.grad .step:nth-child(2) .n{ color:#5E7BC8; }
+      .flow.grad .step:nth-child(3) { border-top-color:#C77F3A !important; } .flow.grad .step:nth-child(3) .n{ color:#C77F3A; }
+      .flow.grad .step:nth-child(4) { border-top-color:#D8362F !important; } .flow.grad .step:nth-child(4) .n{ color:#D8362F; }
+      .flow.grad .step:nth-child(5) { background:linear-gradient(180deg,var(--rosso),var(--rosso-deep)) !important; border-top-color:#7d0a1d !important; }
+      .flow.grad .step .t { color:#EDEBE6 !important; font-weight:800; }
+      .flow.grad .step small { color:#9aa0aa !important; }
+      .flow.grad .step:nth-child(5) .n, .flow.grad .step:nth-child(5) .t, .flow.grad .step:nth-child(5) small { color:#fff !important; }
+      @media (prefers-reduced-motion: no-preference) {
+        [data-deck-active] .flow.grad .step { animation: stepOn .45s ease both; }
+        [data-deck-active] .flow.grad .step:nth-child(1){ animation-delay:.45s }
+        [data-deck-active] .flow.grad .step:nth-child(2){ animation-delay:.80s }
+        [data-deck-active] .flow.grad .step:nth-child(3){ animation-delay:1.15s }
+        [data-deck-active] .flow.grad .step:nth-child(4){ animation-delay:1.50s }
+        [data-deck-active] .flow.grad .step:nth-child(5){ animation-delay:1.85s }
+      }
+      @keyframes stepOn { from { opacity: .25; filter: grayscale(1); transform: translateY(10px); } to { opacity: 1; filter: none; transform: none; } }
+    </style>
+    <div class="flow grad mt-l reveal" style="--d:.2s">
       <div class="step"><div class="heavy n">1</div><div class="t">SEGNALAZIONE</div><small>dal territorio</small><span class="arrow">›</span></div>
       <div class="step"><div class="heavy n">2</div><div class="t">ISTANZA</div><small>verifica e controllo</small><span class="arrow">›</span></div>
       <div class="step"><div class="heavy n">3</div><div class="t">SOLLECITO</div><small>con termini</small><span class="arrow">›</span></div>
@@ -283,7 +319,7 @@
       <div class="glass bar"><div class="ttl">Una squadra rodata</div><p>Non si parte da zero: quindici anni di esperienza.</p></div>
       <div class="glass bar verde"><div class="ttl">Risultati misurabili</div><p>Ogni caso ha protocollo, data, esito: si verifica, non si racconta.</p></div>
     </div>
-    <div class="foot"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uritaxi.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span></span><span class="frontbar"></span><span class="fill"></span><span class="meta">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>
+    <div class="foot"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uritaxi2.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span></span><span class="frontbar"></span><span class="fill"></span><span class="meta">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>
   </section>
 
   <!-- 13 · DOVE ARRIVEREMO -->
@@ -345,7 +381,7 @@
         <span class="meta">Inquadra: rivedi e condividi · slide.gaaitalia.org</span>
       </div>
     </div>
-    <div class="foot"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uritaxi.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span></span><span class="frontbar"></span><span class="fill"></span><span class="meta">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>
+    <div class="foot"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uritaxi2.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span></span><span class="frontbar"></span><span class="fill"></span><span class="meta">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>
   </section>
 
   <!-- 15 · CLOSING -->
@@ -357,7 +393,7 @@
       <h2 class="heavy display grad reveal" style="--d:.18s; font-size:120px">Una macchina già pronta.</h2>
       <p class="sub reveal" style="--d:.3s; max-width:50ch">Collaudata, verificabile, capace di produrre effetti reali. Il metodo esiste già: va usato, non reinventato.</p>
     </div>
-    <div class="foot center" style="justify-content:center"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uritaxi.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span></span></div>
+    <div class="foot center" style="justify-content:center"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uritaxi2.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span></span></div>
   </section>
 
 </deck-stage>
@@ -448,6 +484,32 @@
   }
 })();
 </script>
+<script>
+/* Count-up sequenziale dei 4 numeri (scena "I numeri"): 0 -> valore, uno alla volta. */
+(function () {
+  var deck = document.querySelector('deck-stage');
+  function countup(el, raw, done) {
+    var plus = /\+/.test(raw); var target = parseInt(raw, 10) || 0; var t0 = null, dur = 850;
+    el.textContent = '0';
+    function step(ts) { if (!t0) t0 = ts; var p = Math.min(1, (ts - t0) / dur);
+      var v = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      el.textContent = v + (plus && v > 0 ? '+' : '');
+      if (p < 1) requestAnimationFrame(step); else { el.textContent = target + (plus ? '+' : ''); if (done) done(); } }
+    requestAnimationFrame(step);
+  }
+  function run(scene) {
+    var nums = [].slice.call(scene.querySelectorAll('.stat .num'));
+    var raws = nums.map(function (n) { return n.getAttribute('data-val') || n.textContent.trim(); });
+    nums.forEach(function (n, i) { n.setAttribute('data-val', raws[i]); n.textContent = '0'; });
+    var i = 0; (function next() { if (i >= nums.length) return;
+      countup(nums[i], raws[i], function () { i++; setTimeout(next, 160); }); })();
+  }
+  function check(slide) { if (slide && slide.getAttribute('data-label') === 'I numeri') setTimeout(function () { run(slide); }, 350); }
+  if (deck) deck.addEventListener('slidechange', function (e) { check(e.detail && e.detail.slide); });
+  var act = document.querySelector('deck-stage>section[data-deck-active]'); if (act) check(act);
+})();
+</script>
+
 <script>
 /* Effetto macchina da scrivere sulla frase finale (scena "Dove arriveremo"). */
 (function () {
