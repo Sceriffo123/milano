@@ -8,9 +8,12 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="presentations/cinematic/deck.css">
 <style>
-  /* Loghi delle strisce più grandi e ben visibili (lo stemma deve leggersi). */
-  .logoplate.sm img { height: 84px !important; }
-  .logoplate.sm { padding: 6px 9px !important; }
+  /* Loghi su un'unica targa bianca pulita (stile intestazione istituzionale). */
+  .logostrip { background:#fff !important; border-radius:14px !important; padding:10px 20px !important; gap:24px !important;
+    box-shadow:0 14px 36px rgba(0,0,0,.4) !important; align-items:center !important; }
+  .logostrip .logoplate { background:none !important; box-shadow:none !important; padding:0 !important; border-radius:0 !important; }
+  .logoplate.sm img { height: 58px !important; display:block; width:auto; }
+  .logoplate img[alt*="FILT"] { border-radius:8px; }
 </style>
 </head>
 <body>
@@ -41,8 +44,8 @@
     </div>
     <div class="foot">
       <span class="logostrip reveal" style="--d:.4s">
-        <span class="logoplate sm"><img src="assets/img/logo-uritaxi2.png" alt="URITAXI"></span>
-        <span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span>
+        <span class="logoplate sm"><img src="assets/img/logo-uri3.png" alt="URITAXI"></span>
+        <span class="logoplate sm"><img src="assets/img/logo-filt3.png" alt="FILT-CGIL Taxi"></span>
       </span>
       <span class="frontbar"></span>
       <span class="fill"></span>
@@ -67,7 +70,7 @@
   <!-- 03 · 2014 STAMPA -->
   <section class="s" data-label="2014 · Stampa">
     <style>
-      .news img { height: 600px; max-height: 66vh; width: auto; border-radius: 8px; display: block;
+      .news img { height: 520px; max-height: 60vh; width: auto; border-radius: 8px; display: block;
         box-shadow: 0 26px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08); }
       .news .ph2b { width: 420px; height: 560px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
         text-align: center; background: #11141b; border: 1px dashed #444; color: #9a948b; font-weight: 700; padding: 24px; }
@@ -80,7 +83,7 @@
     <div class="eyebrow reveal"><span class="dot"></span> 2014 · La stampa nazionale</div>
     <div class="row gap-l" style="align-items:center; margin-top:8px">
       <div class="col gap-m fill" style="max-width:740px">
-        <h2 class="heavy h1 reveal" style="--d:.06s; max-width:18ch">Quando ancora non ci credeva nessuno,<br><span class="grad">era già sui giornali.</span></h2>
+        <h2 class="heavy reveal" style="--d:.06s; font-size:60px; line-height:1.02; max-width:15ch">Quando ancora non ci credeva nessuno,<br><span class="grad">era già sui giornali.</span></h2>
         <p class="lead reveal" style="--d:.18s">Evasione fiscale e danno erariale degli NCC fantasma: un'analisi diventata, dieci anni dopo, la base delle inchieste nazionali.</p>
         <div class="band reveal" style="--d:.26s">«La maxi evasione fiscale dei 3mila NCC fantasma» — Il Messaggero, 15 maggio 2014.</div>
       </div>
@@ -98,7 +101,7 @@
       <div class="eyebrow reveal"><span class="dot"></span> Dove tutto stava per cambiare</div>
       <h2 class="heavy giant rosso reveal" style="font-size:340px; margin:.02em 0">2017</h2>
       <p class="lead reveal" style="--d:.12s; max-width:38ch">Una telefonata a uno dei maggiori rappresentanti della categoria. Ci derideva, perché insistevamo sugli atti, sulle carte, sui protocolli. Poi ha scelto un percorso che non condividiamo.</p>
-      <p class="heavy korsiv c-rosso reveal" style="--d:.26s; font-size:108px; line-height:1; text-shadow:0 0 70px rgba(216,21,40,.4)">“Allora ci rideva.”</p>
+      <p class="heavy korsiv c-rosso reveal" style="--d:.26s; font-size:108px; line-height:1; text-shadow:0 0 70px rgba(216,21,40,.4)">“Allora ci derideva.”</p>
     </div>
     <div class="foot center" style="left:152px; right:152px; justify-content:center; text-align:center">
       <span class="meta" style="margin:0 auto">Oggi i fatti hanno dato ragione al metodo: la storica cooperativa romana ha siglato l'accordo nazionale con Uber il <b style="color:var(--ink-dim)">24 maggio 2022</b>.</span>
@@ -319,7 +322,7 @@
       <div class="glass bar"><div class="ttl">Una squadra rodata</div><p>Non si parte da zero: quindici anni di esperienza.</p></div>
       <div class="glass bar verde"><div class="ttl">Risultati misurabili</div><p>Ogni caso ha protocollo, data, esito: si verifica, non si racconta.</p></div>
     </div>
-    <div class="foot"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uritaxi2.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span></span><span class="frontbar"></span><span class="fill"></span><span class="meta">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>
+    <div class="foot"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uri3.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt3.png" alt="FILT-CGIL Taxi"></span></span><span class="frontbar"></span><span class="fill"></span><span class="meta">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>
   </section>
 
   <!-- 13 · DOVE ARRIVEREMO -->
@@ -381,7 +384,7 @@
         <span class="meta">Inquadra: rivedi e condividi · slide.gaaitalia.org</span>
       </div>
     </div>
-    <div class="foot"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uritaxi2.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span></span><span class="frontbar"></span><span class="fill"></span><span class="meta">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>
+    <div class="foot"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uri3.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt3.png" alt="FILT-CGIL Taxi"></span></span><span class="frontbar"></span><span class="fill"></span><span class="meta">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>
   </section>
 
   <!-- 15 · CLOSING -->
@@ -393,7 +396,7 @@
       <h2 class="heavy display grad reveal" style="--d:.18s; font-size:120px">Una macchina già pronta.</h2>
       <p class="sub reveal" style="--d:.3s; max-width:50ch">Collaudata, verificabile, capace di produrre effetti reali. Il metodo esiste già: va usato, non reinventato.</p>
     </div>
-    <div class="foot center" style="justify-content:center"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uritaxi2.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt-cgil.png" alt="FILT-CGIL Taxi"></span></span></div>
+    <div class="foot center" style="justify-content:center"><span class="logostrip"><span class="logoplate sm"><img src="assets/img/logo-uri3.png" alt="URITAXI"></span><span class="logoplate sm"><img src="assets/img/logo-filt3.png" alt="FILT-CGIL Taxi"></span></span></div>
   </section>
 
 </deck-stage>
