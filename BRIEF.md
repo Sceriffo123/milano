@@ -218,11 +218,15 @@ Sottotitolo: *Isola d'Elba, duemila abitanti. Il caso più difficile: il Comune 
 Chiusura: **Cade la prima pedina, cadono le altre. Non è fortuna: è il metodo.**
 - **ANIMAZIONE CHIAVE — IL DOMINO:** una fila di tessere; alla tappa 4 la prima (Marciana) cade e abbatte in sequenza le altre ("altri comuni", "bandi", "taxi mascherato nelle città"). È il momento visivo memorabile.
 
-### Scena 15 — Uber è stata fermata. Proprio qui. (scura)
-- 2 card: **Trib. Milano 8359/2015** (UberPop bloccata: concorrenza sleale verso i taxi) e **TAR Lombardia 860/2016** (lo strumento tecnologico non cancella le regole del trasporto non di linea)
-- Chiusura: *La legge è la stessa ovunque: L. 21/1992. Milano lo ha già dimostrato.*
+### Scena 15 — Uber è già stata fermata. PROPRIO QUI. (scura)
+- Titolo: **"Uber è già stata fermata."**
+- **"PROPRIO QUI."** in GIGANTE, rosso, dimensione molto maggiore del titolo (è l'elemento dominante della scena, deve gridare). Tipografia pesantissima.
+- 2 card: **Trib. Milano 8359/2015** (Sez. specializzata impresa: UberPop bloccata in tutta Italia per concorrenza sleale, penale 20.000 €/giorno) e **TAR Lombardia 860/2016** (lo strumento tecnologico non cancella le regole del trasporto non di linea)
+- Banda (il punto chiave, ancora poco noto): *E quella decisione è ancora valida. L'unico appiglio che nel 2017 permise una marcia indietro era un vuoto normativo — la sospensione dell'art. 29, comma 1-quater, D.L. 207/2008. **Oggi quel vuoto non esiste più**: legge riscritta (L. 12/2019) e Corte costituzionale che conferma i vincoli (56/2020, 163/2025).*
+- Chiusura: *La legge è la stessa ovunque: L. 21/1992. E oggi è più forte di allora.*
 - `[MATERIALE: trib-milano-8359-2015.jpg · tar-lombardia-860-2016.jpg]`
-- **Animazione:** le due card calano come sbarre/cancelli che si chiudono.
+- **Animazione:** "PROPRIO QUI" arriva con impatto (timbro/slam); le due card calano come sbarre/cancelli che si chiudono.
+- **Nota fatti (per le note relatore):** il "vuoto normativo / art. 29 c.1-quater" riguarda l'episodio del 2017 (ordinanza Roma), non la sentenza di Milano 2015: non confonderli. Il senso resta: la vittoria è di nuovo pienamente valida.
 
 ### Scena 16 — Da soli no. Insieme sì. (chiara)
 - Sottotitolo: *CdS 9672/2023: il singolo tassista non è ammesso nemmeno al TAR. L'associazione sì.*
@@ -524,8 +528,8 @@ Mai rispondere alla persona, sempre ai fatti ("I protocolli e le sentenze sono p
     "numero": "8359",
     "anno": "2015",
     "comune": "Milano",
-    "oggetto": "UberPop bloccata",
-    "massima_breve": "Concorrenza sleale verso i taxi: UberPop bloccata.",
+    "oggetto": "UberPop bloccata — Proprio qui",
+    "massima_breve": "Sez. specializzata impresa: UberPop bloccata in tutta Italia per concorrenza sleale (penale 20.000 €/giorno). Ancora valida: l'unico appiglio del 2017 era il vuoto normativo da sospensione dell'art. 29 c.1-quater D.L. 207/2008, oggi colmato (L. 12/2019; Corte cost. 56/2020 e 163/2025).",
     "fonte_pdf": "",
     "immagine": "img/trib-milano-8359-2015.jpg"
   },
