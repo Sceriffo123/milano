@@ -1,0 +1,10 @@
+{
+  "_nota": "Dati quantitativi. Confermati con Marco il 05/06/2026. 'revoche_totale' viene calcolato a runtime dal numero di righe di revoche.json: NON scriverlo a mano.",
+  "anni_attivita": 15,
+  "comuni_trattati": "200+",
+  "atti_periodo": "250+",
+  "atti_periodo_label": "negli ultimi 5 mesi",
+  "procedimenti_in_corso": 14,
+  "comuni_in_corso": 12,
+  "data_aggiornamento": "5 giugno 2026"
+}

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<!--
+  BASTA ABUSIVISMO — web-app a slide. Milano, 10 giugno 2026.
+  Template autonomo: funziona aprendo il file con doppio clic (offline) e servito da nginx/GitHub Pages.
+  ============================================================================
+  COME USARLA
+  - Doppio clic su index.html  →  apre in locale (i dati di dettaglio usano i fallback inline).
+  - Per caricare i file assets/*.json serve un server (CORS blocca fetch da file://):
+      • locale:  python -m http.server 8080   →  http://localhost:8080
+      • VPS:     servire la cartella con nginx (root su questa cartella)
+      • GitHub Pages: Settings → Pages → branch main / root
+  TASTI
+  - ← → / spazio : avanti/indietro tra le scene principali
+  - ↓ ↑          : entra/esci dagli approfondimenti della scena
+  - V            : commuta RELATORE / VETRINA (loop automatico)
+  - N            : note relatore       F : fullscreen      Esc : indice capitoli
+  ============================================================================
+-->
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Basta Abusivismo — Milano, 10 giugno 2026</title>
+<style>
+  /* ===== COSTANTI VISIVE ===== */
+  :root{
+    --nero:#1A1A1A; --rosso:#C8102E; --panna:#F7F5F2; --bianco:#FFFFFF;
+    --grigio:#6b6b6b; --ombra:0 18px 50px rgba(0,0,0,.18);
+    --t:.7s; /* durata animazioni elementi (solenne) */
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Helvetica Neue",Arial,system-ui,sans-serif;
+    background:#000; color:var(--nero); overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .heavy{font-family:"Arial Black","Archivo Black",Impact,Arial,sans-serif; font-weight:900; letter-spacing:-.01em}
+
+  /* ===== STAGE / SCENE ===== */
+  #stage{position:fixed; inset:0; overflow:hidden}
+  .scene{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    justify-content:center; padding:6vh 8vw; opacity:0; visibility:hidden;
+    transition:opacity .55s ease; pointer-events:none;
+  }
+  .scene.active{opacity:1; visibility:visible; pointer-events:auto}
+  .scene.dark{background:var(--nero); color:var(--panna)}
+  .scene.light{background:var(--panna); color:var(--nero)}
+  .scene .kicker{color:var(--rosso); font-weight:700; letter-spacing:.18em; text-transform:uppercase; font-size:clamp(11px,1.4vw,16px)}
+  .scene h1{font-size:clamp(40px,9vw,128px); line-height:.95; margin:.15em 0}
+  .scene h2{font-size:clamp(30px,5.4vw,72px); line-height:1; margin:.1em 0}
+  .scene .lead{font-size:clamp(17px,2.3vw,30px); max-width:24ch; line-height:1.25}
+  .scene .sub{font-size:clamp(15px,1.8vw,24px); color:var(--grigio); max-width:34ch}
+  .dark .sub{color:#b9b4ac}
+  .num-giant{font-size:clamp(90px,22vw,300px); color:var(--rosso); line-height:.85}
+  .corsivo{font-style:italic}
+
+  /* animazione "reveal": gli elementi con [data-anim] entrano quando la scena è attiva */
+  [data-anim]{opacity:0; transform:translateY(18px); transition:opacity var(--t) ease, transform var(--t) ease}
+  .scene.active [data-anim]{opacity:1; transform:none}
+  .scene.active [data-anim]{transition-delay:calc(var(--i,0) * .18s)}
+
+  /* chip */
+  .chip{display:inline-block; background:var(--rosso); color:#fff; font-weight:700;
+    padding:.5em 1em; border-radius:3px; letter-spacing:.12em; font-size:clamp(11px,1.4vw,15px)}
+
+  /* card con barra rossa */
+  .card{background:#fff; color:var(--nero); border-left:8px solid var(--rosso);
+    padding:1.1em 1.3em; box-shadow:var(--ombra); border-radius:4px; max-width:60ch}
+  .dark .card{background:#232323; color:var(--panna)}
+
+  .band{background:var(--rosso); color:#fff; padding:.8em 1.2em; border-radius:4px; font-weight:700}
+
+  .firma{margin-top:1.2em; font-weight:700; letter-spacing:.02em}
+  .stripe{position:absolute; left:0; right:0; bottom:0; background:#fff; color:#111;
+    display:flex; align-items:center; gap:1.2em; padding:.7em 8vw; font-size:clamp(10px,1.3vw,14px)}
+  .stripe .logos{font-weight:900; letter-spacing:.03em; color:var(--rosso)}
+
+  /* layout helpers */
+  .row{display:flex; gap:2.4vw; align-items:center; flex-wrap:wrap}
+  .col{display:flex; flex-direction:column; gap:.6em}
+  .two{display:grid; grid-template-columns:1fr 1fr; gap:2.4vw; width:100%}
+  .three{display:grid; grid-template-columns:repeat(3,1fr); gap:1.6vw; width:100%}
+  .four{display:grid; grid-template-columns:repeat(4,1fr); gap:1.4vw; width:100%}
+  @media(max-width:780px){.two,.three,.four{grid-template-columns:1fr}}
+
+  /* macchina: 5 blocchi */
+  .flow{display:flex; gap:.5em; align-items:stretch; flex-wrap:wrap; width:100%}
+  .flow .step{flex:1; min-width:120px; background:#fff; border-top:6px solid var(--rosso);
+    padding:1em .8em; box-shadow:var(--ombra); border-radius:4px}
+  .flow .step.last{background:var(--rosso); color:#fff; border-top-color:#7d0a1d}
+  .flow .step b{display:block; font-size:1.6em; color:var(--rosso)}
+  .flow .step.last b{color:#fff}
+
+  /* numeri / contatori */
+  .counter{font-family:"Arial Black",Impact,sans-serif; font-weight:900; color:var(--rosso); font-size:clamp(52px,9vw,120px); line-height:.9}
+  .counter+.clab{font-size:clamp(13px,1.5vw,18px); color:var(--grigio); max-width:18ch}
+  .dark .clab{color:#b9b4ac}
+
+  /* timeline verticale */
+  .tl{list-style:none; position:relative; padding-left:1.6em}
+  .tl::before{content:""; position:absolute; left:.45em; top:.4em; bottom:.4em; width:3px; background:var(--rosso); transform:scaleY(0); transform-origin:top; transition:transform 1.1s ease}
+  .scene.active .tl::before{transform:scaleY(1)}
+  .tl li{position:relative; margin:.9em 0}
+  .tl li::before{content:""; position:absolute; left:-1.32em; top:.35em; width:.7em; height:.7em; border-radius:50%; background:var(--rosso)}
+  .tl li b{color:var(--rosso)}
+
+  /* piramide */
+  .pyr{display:flex; flex-direction:column; align-items:center; gap:.5em; width:100%}
+  .pyr div{color:#fff; text-align:center; padding:.8em; border-radius:4px; font-weight:700}
+  .pyr .b1{width:100%; background:#2f2f2f}
+  .pyr .b2{width:66%; background:#555}
+  .pyr .b3{width:38%; background:var(--rosso)}
+
+  /* domino */
+  .domino{display:flex; gap:.8em; align-items:flex-end; height:34vh; margin-top:1em}
+  .domino .tile{width:42px; height:120px; background:var(--nero); border-radius:5px; transform-origin:bottom left;
+    display:flex; align-items:flex-end; justify-content:center; color:#fff; font-size:11px; padding-bottom:6px; box-shadow:var(--ombra)}
+  .light .domino .tile{background:#222}
+  .domino .tile span{writing-mode:vertical-rl; transform:rotate(180deg); opacity:.85}
+  .scene.active.run-domino .tile{animation:fall .6s ease forwards}
+  .scene.active.run-domino .tile:nth-child(1){animation-delay:.2s}
+  .scene.active.run-domino .tile:nth-child(2){animation-delay:.7s}
+  .scene.active.run-domino .tile:nth-child(3){animation-delay:1.2s}
+  .scene.active.run-domino .tile:nth-child(4){animation-delay:1.7s}
+  @keyframes fall{to{transform:rotate(78deg)}}
+
+  /* elenchi sentenze due colonne */
+  .pron{columns:2; column-gap:3vw; font-size:clamp(13px,1.5vw,18px)}
+  @media(max-width:780px){.pron{columns:1}}
+  .pron div{break-inside:avoid; margin:.35em 0}
+  .pron b{color:var(--rosso)}
+
+  /* registro revoche */
+  .reg{width:100%; max-height:52vh; overflow:auto; border-collapse:collapse; font-size:clamp(12px,1.5vw,18px)}
+  .reg th,.reg td{text-align:left; padding:.55em .7em; border-bottom:1px solid rgba(0,0,0,.12)}
+  .reg th{color:var(--rosso); text-transform:uppercase; letter-spacing:.08em; font-size:.8em}
+  .reg td b{color:var(--rosso)}
+
+  /* deep-dive card */
+  .deep h2 small{display:block; color:var(--grigio); font-size:.4em; letter-spacing:.05em; margin-top:.3em}
+  .deep .thumb{margin-top:1em; max-width:46ch; cursor:zoom-in}
+  .thumb img{max-width:100%; max-height:30vh; border-radius:4px; box-shadow:var(--ombra); display:block}
+  .thumb .ph{background:#e9e6e1; border:1px dashed #b7b1a8; color:#8a847b; padding:2.2em; border-radius:4px; text-align:center; font-size:.85em}
+  .dark .thumb .ph{background:#2a2a2a; border-color:#444; color:#9a948b}
+
+  /* badge "approfondimento" */
+  .deepbadge{position:absolute; top:3vh; right:8vw; color:var(--rosso); font-weight:700; letter-spacing:.1em; font-size:12px; text-transform:uppercase}
+
+  /* ===== HUD ===== */
+  #progress{position:fixed; top:0; left:0; height:4px; background:var(--rosso); width:0; z-index:40; transition:width .4s ease}
+  #hud{position:fixed; bottom:14px; right:18px; z-index:40; display:flex; gap:8px; align-items:center;
+    font-size:12px; color:#888; background:rgba(255,255,255,.0)}
+  #hud .pill{background:rgba(0,0,0,.55); color:#fff; padding:4px 9px; border-radius:20px; backdrop-filter:blur(4px)}
+  .mode-vetrina #hud .mode{background:var(--rosso)}
+  #hint{position:fixed; bottom:14px; left:18px; z-index:40; color:#999; font-size:12px;
+    background:rgba(0,0,0,.45); color:#eee; padding:4px 10px; border-radius:20px}
+
+  /* down indicator */
+  #downhint{position:fixed; left:50%; bottom:42px; transform:translateX(-50%); z-index:35;
+    color:var(--rosso); font-size:13px; font-weight:700; letter-spacing:.06em; opacity:0; transition:opacity .4s}
+  #downhint.show{opacity:1; animation:bob 1.6s infinite}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+
+  /* note relatore */
+  #notes{position:fixed; left:0; right:0; bottom:0; max-height:42vh; overflow:auto; z-index:50;
+    background:rgba(15,15,15,.96); color:#f1efe9; padding:1.2em 8vw; transform:translateY(110%); transition:transform .35s ease;
+    border-top:4px solid var(--rosso); font-size:clamp(14px,1.7vw,20px); line-height:1.45}
+  #notes.show{transform:none}
+  #notes h4{color:var(--rosso); text-transform:uppercase; letter-spacing:.1em; font-size:.8em; margin-bottom:.5em}
+
+  /* indice */
+  #toc{position:fixed; inset:0; z-index:60; background:rgba(10,10,10,.97); color:#fff; padding:6vh 8vw;
+    overflow:auto; display:none}
+  #toc.show{display:block}
+  #toc h3{color:var(--rosso); letter-spacing:.1em; text-transform:uppercase; margin-bottom:1em}
+  #toc ol{columns:2; column-gap:4vw; list-style-position:inside}
+  @media(max-width:780px){#toc ol{columns:1}}
+  #toc li{margin:.5em 0; cursor:pointer; font-size:clamp(15px,1.8vw,20px)}
+  #toc li:hover{color:var(--rosso)}
+
+  /* lightbox */
+  #lb{position:fixed; inset:0; z-index:70; background:rgba(0,0,0,.92); display:none;
+    flex-direction:column; align-items:center; justify-content:center; padding:5vh 5vw; cursor:zoom-out}
+  #lb.show{display:flex}
+  #lb img{max-width:90vw; max-height:78vh; border-radius:4px}
+  #lb .cap{color:#eee; margin-top:1em; font-size:15px; text-align:center; max-width:70ch}
+  #lb .ph{background:#1c1c1c; color:#aaa; border:1px dashed #555; padding:4em 3em; border-radius:6px; text-align:center}
+
+  /* start overlay */
+  #start{position:fixed; inset:0; z-index:80; background:var(--nero); color:var(--panna);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.4em; text-align:center; padding:8vw}
+  #start h1{font-size:clamp(40px,8vw,96px); color:#fff}
+  #start .chip{margin-bottom:.4em}
+  #start .btns{display:flex; gap:1em; flex-wrap:wrap; justify-content:center}
+  #start button{font:inherit; font-weight:700; cursor:pointer; border:0; border-radius:5px; padding:.9em 1.6em; font-size:clamp(14px,1.8vw,20px)}
+  #start .primary{background:var(--rosso); color:#fff}
+  #start .ghost{background:transparent; color:#fff; border:2px solid #fff}
+  #start small{color:#9a948b; max-width:50ch}
+
+  /* PRINT / fallback statico */
+  @media print{
+    body{overflow:visible; background:#fff}
+    #stage{position:static}
+    .scene{position:static; opacity:1!important; visibility:visible!important; page-break-after:always;
+      min-height:96vh; border-bottom:1px solid #ddd}
+    [data-anim]{opacity:1!important; transform:none!important}
+    #hud,#hint,#notes,#toc,#lb,#start,#progress,#downhint,.deepbadge{display:none!important}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important}
+    [data-anim]{transition:opacity .2s linear!important; transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="stage"><!-- scene iniettate da JS --></div>
+
+<div id="downhint">↓ approfondimenti</div>
+<div id="hint">← → naviga · ↓ dettagli · V vetrina · N note · Esc indice</div>
+<div id="hud">
+  <span class="pill mode">RELATORE</span>
+  <span class="pill timer">00:00</span>
+  <span class="pill pos">1 / 1</span>
+</div>
+
+<div id="notes"><h4>Note relatore</h4><div class="ntext"></div></div>
+
+<div id="toc"><h3>Indice</h3><ol></ol></div>
+
+<div id="lb"><div class="box"></div><div class="cap"></div></div>
+
+<div id="start">
+  <span class="chip">MILANO · 10 GIUGNO 2026 · SPAZIO KOLBE</span>
+  <h1 class="heavy">BASTA ABUSIVISMO</h1>
+  <small>Il metodo Firenze: quindici anni di atti, risultati verificabili.</small>
+  <div class="btns">
+    <button class="primary" data-mode="relatore">▶ Modalità Relatore</button>
+    <button class="ghost" data-mode="vetrina">⟳ Modalità Vetrina (loop)</button>
+  </div>
+  <small>Relatore = navighi tu. Vetrina = scorre da sola in loop, ideale per lo schermo in sala / VPS.</small>
+</div>
+
+<script>
+/* ===========================================================================
+   DATI — confermati con Marco 05/06/2026. Fallback inline (per uso da file://).
+   Se i file assets/*.json sono raggiungibili (server), sovrascrivono questi.
+   =========================================================================== */
+let DATI = {
+  anni_attivita:15, comuni_trattati:"200+", atti_periodo:"250+",
+  atti_periodo_label:"negli ultimi 5 mesi", procedimenti_in_corso:14,
+  comuni_in_corso:12, data_aggiornamento:"5 giugno 2026", revoche_totale:"[in verifica]"
+};
+let REVOCHE = [
+  {comune:"Marciana",provincia:"LI",n_titoli:7,data:"2025-06-30",
+   esito:"Revoche/decadenze — confermate dal TAR (903/2026, 396/2026)"}
+];
+let SENTENZE = []; let NORME = []; let STAMPA = [];
+
+/* === DURATE modalità VETRINA (secondi per scena). Modificabili. === */
+const SCENE_DURATIONS = { default:9, "s3":7, "s10":11, "deep":7 };
+const LOOP_VETRINA = true;
+
+/* ===========================================================================
+   SCENE NARRATIVE — definite come oggetti {id, theme, html, notes, anim}
+   I deep-dive (schede) sono generati dai JSON e agganciati a una scena "parent".
+   =========================================================================== */
+function scenesDef(){ return [
+{id:"s1",theme:"dark",title:"Titolo",html:`
+  <span class="chip" data-anim>MILANO · 10 GIUGNO 2026 · SPAZIO KOLBE</span>
+  <h1 class="heavy"><span data-anim style="--i:0">BASTA</span> <span data-anim style="--i:1">ABUSIVISMO</span></h1>
+  <p class="lead corsivo" data-anim style="--i:2">Il metodo Firenze: quindici anni di atti, risultati verificabili.</p>
+  <div class="firma" data-anim style="--i:3">Marco Morana — URITAXI · FILT CGIL</div>
+  <div class="stripe"><span class="logos">URITAXI · FILT CGIL</span><span>Incontro operativo sul contrasto all'abusivismo nel trasporto pubblico non di linea</span></div>`,
+  notes:"Ringraziare per nome gli organizzatori (FILT CGIL Taxi, Taxi Service Milano, UGL Taxi Milano, URITAXI Milano) e i co-relatori: Claudio Giudici, Alessandro Genovese, Lapo Lemmi."},
+
+{id:"s2",theme:"light",title:"2011 — Dove tutto è cominciato",html:`
+  <div class="row" style="align-items:flex-start">
+    <div class="num-giant heavy" data-anim>2011</div>
+    <div class="col" style="flex:1; min-width:280px">
+      <h2 class="heavy" data-anim style="--i:1">Dove tutto è cominciato</h2>
+      <p class="lead" data-anim style="--i:2">Una volontà precisa: non limitarsi a denunciare l'abusivismo, ma costruire un metodo.</p>
+      <div class="card" data-anim style="--i:3"><b>2013 — L'azione organizzata.</b> Avv. Maddalena D'Aprile (il primo supporto legale) e Dott.ssa Giacinta Bucchi (commercialista, la struttura amministrativa).</div>
+    </div>
+  </div>
+  <div class="band" data-anim style="--i:4; margin-top:1.4em"><b>2014 — già sulla stampa nazionale.</b> «La maxi evasione fiscale dei 3mila NCC fantasma» (Il Messaggero, 15.05.2014): la nostra analisi su evasione e danno erariale. Dieci anni dopo, è ancora la base delle inchieste nazionali.</div>`,
+  notes:"Sottolineare la continuità: non un'iniziativa estemporanea ma un percorso iniziato nel 2011-2013. Il primo grazie va a chi ci ha creduto quando non ci credeva nessuno."},
+
+{id:"s3",theme:"dark",title:"2017 — Si rideva",html:`
+  <div style="margin:auto; text-align:center">
+    <div class="num-giant heavy" data-anim>2017</div>
+    <p class="corsivo" data-anim style="--i:2; font-size:clamp(28px,5vw,64px); margin-top:.2em">“Si rideva.”</p>
+  </div>`,
+  notes:"Racconto a voce: telefonata 2017 a una figura di una storica cooperativa romana; era in vivavoce, trasformata in scherno. Chiusura: «Ancora me lo ricordo.» + pausa di silenzio. Se contestato: «Io quel giorno l'ho vissuto al telefono. Ognuno si ricorda la propria parte. I fatti successivi parlano da soli.»"},
+
+{id:"s4",theme:"light",title:"Avrei preferito sbagliarmi",html:`
+  <div class="two">
+    <div class="col">
+      <h2 class="heavy" data-anim>“Avrei preferito sbagliarmi.”</h2>
+      <p class="sub corsivo" data-anim style="--i:1">In quella risata non ha perso una persona. Ha perso una categoria intera.</p>
+    </div>
+    <ul class="tl">
+      <li data-anim style="--i:1"><b>2017</b> — Deriso in vivavoce perché dicevo che l'abusivismo si combatte con gli atti.</li>
+      <li data-anim style="--i:2"><b>2022</b> — 24 maggio: la storica cooperativa romana sigla l'accordo nazionale con Uber.</li>
+      <li data-anim style="--i:3"><b>2026</b> — La multinazionale non bussa più alla porta: detta le condizioni dentro casa nostra.</li>
+    </ul>
+  </div>`,
+  notes:"«Avrei preferito sbagliarmi davvero. Perché in quella risata non ha perso una persona: ha perso una categoria intera.» Tono dispiaciuto, mai rancoroso."},
+
+{id:"s5",theme:"light",title:"La macchina",html:`
+  <h2 class="heavy" data-anim>La macchina</h2>
+  <p class="sub" data-anim style="--i:1">Ogni passaggio è un atto protocollato, opponibile, verificabile.</p>
+  <div class="flow" style="margin:1.2em 0">
+    <div class="step" data-anim style="--i:1"><b>1</b> SEGNALAZIONE<br><small>dal territorio</small></div>
+    <div class="step" data-anim style="--i:2"><b>2</b> ISTANZA<br><small>verifica e controllo</small></div>
+    <div class="step" data-anim style="--i:3"><b>3</b> SOLLECITO<br><small>con termini</small></div>
+    <div class="step" data-anim style="--i:4"><b>4</b> DIFFIDA<br><small>ad adempiere</small></div>
+    <div class="step last" data-anim style="--i:5"><b>5</b> ESPOSTO<br><small>autorità superiori</small></div>
+  </div>
+  <div class="card" data-anim style="--i:6"><b>Protocolli, PEC, giurisprudenza. Non proteste.</b> Se il Comune non agisce, ogni atto diventa la base del successivo: fino alla responsabilità erariale del funzionario inerte.</div>`,
+  notes:"Il cuore del metodo è amministrativo. Non è protesta: è procedura, con date e protocolli."},
+
+{id:"s6",theme:"dark",title:"Non si improvvisa",html:`
+  <h1 class="heavy" data-anim style="font-size:clamp(36px,7vw,96px)">Non si improvvisa.</h1>
+  <p class="sub" data-anim style="--i:1">Questo non è un lavoro che si inizia una mattina perché si decide di iniziare.</p>
+  <p class="heavy" data-anim style="--i:2; color:var(--rosso); font-size:clamp(22px,3.4vw,46px); margin:.4em 0">La competenza non si compra. Si accumula.</p>
+  <div class="two" style="margin-top:.6em">
+    <div class="card" data-anim style="--i:3"><b>Partire oggi da zero</b><br>Primi risultati tra anni. Anni che la categoria non ha. Soldi spesi senza la competenza per usarli.</div>
+    <div class="card" data-anim style="--i:4"><b>Il metodo, già pronto</b><br>Quindici anni di competenza accumulata, modelli collaudati, risultati da subito.</div>
+  </div>
+  <p class="sub" data-anim style="--i:5; margin-top:1em">Montare una struttura oggi senza quella competenza non porta da nessuna parte: spreca solo denaro. Il metodo esiste già: va usato, non reinventato.</p>`,
+  notes:"«Non lo dico contro nessuno, e non per vantarmi. La competenza non si compra, si accumula. A noi sono serviti quindici anni. Chi parte oggi da zero vede i primi risultati tra anni, e nel frattempo spende soldi senza la competenza per usarli bene.»"},
+
+{id:"s7",theme:"light",title:"Lo fanno i tassisti",html:`
+  <h2 class="heavy" data-anim>Lo fanno i tassisti.</h2>
+  <p class="sub" data-anim style="--i:1">Con più consulenti accanto. Non delegato a un solo studio legale.</p>
+  <div class="pyr" style="margin:1.2em 0; max-width:760px">
+    <div class="b1" data-anim style="--i:1">I tassisti e i consulenti — il lavoro amministrativo quotidiano: segnalazioni, istanze, solleciti, diffide, protocolli, PEC. Qui si vince o si perde.</div>
+    <div class="b2" data-anim style="--i:2">La struttura organizzata — dati, scadenze, modelli.</div>
+    <div class="b3" data-anim style="--i:3">Avvocati — solo all'estrema ratio. In giudizio.</div>
+  </div>
+  <div class="card" data-anim style="--i:4">Gli avvocati sono serviti, eccome. Ma la competenza l'ha acquisita il sistema, in quindici anni: non sta nella toga di un singolo. È un lavoro di categoria.</div>`,
+  notes:"«Attenti a un equivoco: questo non è il lavoro di un avvocato. L'avvocato serve alla fine, in giudizio. Il lavoro vero è quotidiano, amministrativo, e lo fanno i tassisti con i loro consulenti.»"},
+
+{id:"s8",theme:"light",title:"I numeri",html:`
+  <h2 class="heavy" data-anim>I numeri</h2>
+  <div class="four" style="margin:1.2em 0">
+    <div data-anim style="--i:1"><div class="counter" data-count="15">0</div><div class="clab">anni di attività continuativa (2011–2026)</div></div>
+    <div data-anim style="--i:2"><div class="counter" data-count="__COMUNI__">0</div><div class="clab">comuni trattati dal 2012, dalla Sicilia a Milano</div></div>
+    <div data-anim style="--i:3"><div class="counter" data-count="__ATTI__">0</div><div class="clab">atti prodotti __ATTILAB__</div></div>
+    <div data-anim style="--i:4"><div class="counter" data-count="__REVOCHE__">0</div><div class="clab">revoche e decadenze negli ultimi 12 mesi</div></div>
+  </div>
+  <div class="band" data-anim style="--i:5">E __PROC__ procedimenti in corso in __COMC__ comuni — anche in Lombardia: Como, Saronno, Trescore Cremasco. Dati al __DATA__, verificabili atto per atto.</div>`,
+  notes:"I numeri sono verificabili atto per atto. Non arrotondare a voce. La riga sulla Lombardia avvicina il dato a Milano."},
+
+{id:"s9",theme:"light",title:"Non parole: revoche",parent_for:"revoche",html:`
+  <h2 class="heavy" data-anim>Non parole: revoche.</h2>
+  <p class="sub" data-anim style="--i:1">Ogni riga è un titolo NCC tolto o decaduto. Con comune, data e provvedimento.</p>
+  <div data-anim style="--i:2; width:100%"><table class="reg" id="regrev"><thead><tr><th>Comune</th><th>Titoli</th><th>Data</th><th>Esito</th></tr></thead><tbody></tbody></table></div>
+  <div class="band" data-anim style="--i:3; margin-top:.8em">Totale: <span id="revtot">[in verifica]</span> provvedimenti.</div>`,
+  notes:"NON dire «decine e decine»: far parlare l'elenco. Se qualcuno sminuisce i risultati: «Quante revoche, quante sentenze? I numeri sono qui, verificabili.»"},
+
+{id:"s10",theme:"dark",title:"Il territorio diventa ostico",html:`
+  <h1 class="heavy" data-anim style="font-size:clamp(32px,6vw,84px)">Il territorio diventa ostico.</h1>
+  <p class="sub" data-anim style="--i:1">Il metodo non toglie solo singole autorizzazioni. Cambia il conto economico dell'abusivo.</p>
+  <div class="three" style="margin:1.2em 0">
+    <div class="card" data-anim style="--i:1"><b>Titoli revocati</b></div>
+    <div class="card" data-anim style="--i:2"><b>Bandi che si chiudono</b></div>
+    <div class="card" data-anim style="--i:3"><b>Non conviene più investirci qui</b></div>
+  </div>
+  <div class="band" data-anim style="--i:4">Dove lavoriamo con continuità, l'abusivo fa i suoi conti e si sposta. È la deterrenza: un territorio che si difende da solo. Questo vogliamo per Milano.</div>`,
+  notes:"«Il risultato più importante non è la singola revoca. È che, dove lavoriamo, l'abusivo capisce che non gli conviene più. Il territorio si difende da solo.» Tono: conseguenza della legalità, mai «li abbiamo cacciati noi»."},
+
+{id:"s11",theme:"dark",title:"La squadra",html:`
+  <h2 class="heavy" data-anim>Quindici anni, una squadra</h2>
+  <div class="col" style="margin-top:1em; gap:.45em; font-size:clamp(15px,1.9vw,22px)">
+    <div data-anim style="--i:1">Avv. Maddalena D'Aprile — dal 2013, il primo supporto legale</div>
+    <div data-anim style="--i:1">Dott.ssa Giacinta Bucchi — commercialista · dal 2013</div>
+    <div data-anim style="--i:2">Avv. Marzia Di Giacobbe · Avv. Ilaria Passerini — dal 2018</div>
+    <div data-anim style="--i:2">Avv. Bacci · Avv. Filaci — dal 2019, ancora operativi nel 2026</div>
+    <div data-anim style="--i:3">Avv. De Agostino — caso Arcidosso (GR)</div>
+    <div data-anim style="--i:3">Arturo Grasso · Tiziana Lancierini · Martina Prosperini · Vincenzo De Franco</div>
+    <div class="corsivo sub" data-anim style="--i:4">...e tanti altri che dal 2012 al 2026 hanno lavorato, e lavorano ancora, per le associazioni</div>
+  </div>`,
+  notes:"Slide «titoli di coda»: struttura professionale vera, non improvvisazione. Avvisare prima i professionisti citati."},
+
+{id:"s12",theme:"light",title:"Le sentenze che contano",parent_for:"sentenze-key",html:`
+  <h2 class="heavy" data-anim>Le sentenze che contano</h2>
+  <div class="three" style="margin-top:1.2em">
+    <div class="card" data-anim style="--i:1"><b>CdS 9672/2023</b><br><small>LEGITTIMAZIONE ATTIVA</small><br>Il Consiglio di Stato riconosce a URITAXI il diritto di stare in giudizio per la categoria. Da soli no. Insieme sì.</div>
+    <div class="card" data-anim style="--i:2"><b>Corte Cost. 56/2020 · 163/2025</b><br><small>VINCOLO TERRITORIALE</small><br>La Consulta conferma che il vincolo è legittimo. I controlli sono “presidi adeguati”, non burocrazia.</div>
+    <div class="card" data-anim style="--i:3"><b>TAR Toscana 263/2023 · 903/2026</b><br><small>LE FOTO SONO PROVA</small><br>Il TAR indica alle associazioni le fotografie come prova dei veicoli NCC fuori territorio. E le nostre istanze reggono.</div>
+  </div>
+  <p class="sub corsivo" data-anim style="--i:4; margin-top:1em">«...le associazioni potrebbero ricorrere a molti altri mezzi di prova, quali ad esempio delle fotografie...» — TAR Toscana 263/2023, pag. 4</p>`,
+  notes:"Premere ↓ per scorrere le singole pronunce con il ritaglio del fascicolo (lightbox)."},
+
+{id:"s13",theme:"dark",title:"TAR Toscana: dieci pronunce",html:`
+  <h2 class="heavy" data-anim>TAR Toscana: dieci pronunce. Tutte nella stessa direzione.</h2>
+  <div class="pron" style="margin:1.2em 0">
+    <div data-anim style="--i:1"><b>535/2021</b> Greve in Chianti</div>
+    <div data-anim style="--i:1"><b>337 e 339/2022</b> Lucca (NCC non è taxi)</div>
+    <div data-anim style="--i:2"><b>263/2023</b> Firenze (le foto sono prova)</div>
+    <div data-anim style="--i:2"><b>740/2025</b> Scarperia e San Piero (decadenza)</div>
+    <div data-anim style="--i:3"><b>396/2026</b> Marciana (decadenza)</div>
+    <div data-anim style="--i:3"><b>875/2026</b> Montepulciano (decadenza)</div>
+    <div data-anim style="--i:4"><b>888/2026</b> Capalbio (revoca)</div>
+    <div data-anim style="--i:4"><b>903/2026</b> Marciana (ricorsi respinti)</div>
+    <div data-anim style="--i:5"><b>1104/2026</b> Villafranca in Lunigiana (revoca)</div>
+  </div>
+  <div class="band" data-anim style="--i:6">Sette vittorie solo nel biennio 2025-2026. Confermano ciò che sapevamo essere vero. Da anni.</div>`,
+  notes:"Premere ↓ per i dettagli delle pronunce. La direzione è univoca: il metodo regge in giudizio."},
+
+{id:"s14",theme:"light",title:"Il caso Marciana",html:`
+  <h2 class="heavy" data-anim>Il caso Marciana</h2>
+  <p class="sub" data-anim style="--i:1">Isola d'Elba, duemila abitanti. Il caso più difficile: il Comune non ha mai collaborato. Non ci siamo mai arresi.</p>
+  <div class="two" style="margin:1em 0">
+    <div class="col">
+      <div class="card" data-anim style="--i:1"><b>1 · L'esposto — 13 ottobre 2024.</b> URITAXI segnala. Il TAR riconoscerà l'esposto sindacale come legittimo attivatore del controllo straordinario.</div>
+      <div class="card" data-anim style="--i:2"><b>2 · Le 7 revoche — 30 giugno 2025.</b> Il Comune, dopo l'istruttoria, toglie 7 titoli NCC. Sette, in un comune di duemila abitanti.</div>
+      <div class="card" data-anim style="--i:3"><b>3 · I ricorsi — respinti integralmente.</b> 4 definitive senza ricorso; in 3 ricorrono al TAR e perdono tutti (903/2026, 396/2026).</div>
+    </div>
+    <div class="col" style="justify-content:center">
+      <div class="card" data-anim style="--i:4; border-left-color:#7d0a1d"><b>4 · L'effetto domino.</b> Decadenze a catena, esclusione dai bandi: si ferma il sistema delle autorizzazioni di provincia usate nelle città per fare taxi mascherato, con autisti sottopagati h24.</div>
+      <div class="domino" data-anim style="--i:5">
+        <div class="tile"><span>Marciana</span></div>
+        <div class="tile"><span>altri comuni</span></div>
+        <div class="tile"><span>bandi</span></div>
+        <div class="tile"><span>taxi mascherato</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="heavy" data-anim style="--i:6; color:var(--rosso); font-size:clamp(18px,2.6vw,34px)">Cade la prima pedina, cadono le altre. Non è fortuna: è il metodo.</p>`,
+  notes:"Chiusura umana: «A volte ci facciamo persino degli scrupoli: stiamo esagerando? Poi pensiamo agli autisti sfruttati h24 e ai colleghi che rispettano le regole e non arrivano a fine mese. E capiamo che fermarsi sarebbe la vera ingiustizia.»"},
+
+{id:"s15",theme:"dark",title:"Uber fermata a Milano",html:`
+  <h2 class="heavy" data-anim>Uber è stata fermata. Proprio qui.</h2>
+  <div class="two" style="margin:1.2em 0">
+    <div class="card" data-anim style="--i:1"><b>Trib. Milano 8359/2015</b><br>UberPop bloccata: concorrenza sleale verso i taxi.</div>
+    <div class="card" data-anim style="--i:2"><b>TAR Lombardia 860/2016</b><br>Lo strumento tecnologico non cancella le regole del trasporto non di linea.</div>
+  </div>
+  <p class="sub corsivo" data-anim style="--i:3">La legge è la stessa ovunque: L. 21/1992. Milano lo ha già dimostrato.</p>`,
+  notes:"Se «a Milano è diverso»: la L. 21/1992 vale ovunque, e Uber è stata fermata proprio qui."},
+
+{id:"s16",theme:"light",title:"Da soli no. Insieme sì.",html:`
+  <h2 class="heavy" data-anim>Da soli no. Insieme sì.</h2>
+  <p class="sub" data-anim style="--i:1">CdS 9672/2023: il singolo tassista non è ammesso nemmeno al TAR. L'associazione sì.</p>
+  <div class="three" style="margin:1.2em 0">
+    <div class="card" data-anim style="--i:1"><b>Il metodo, subito</b><br>Modelli collaudati dal 2012, pronti per Milano.</div>
+    <div class="card" data-anim style="--i:2"><b>Una squadra rodata</b><br>Non si parte da zero: quindici anni di esperienza.</div>
+    <div class="card" data-anim style="--i:3"><b>Risultati misurabili</b><br>Ogni caso ha protocollo, data, esito: si verifica, non si racconta.</div>
+  </div>
+  <div class="band" data-anim style="--i:4">Insieme alle sigle che hanno organizzato questa giornata. Un fronte comune.</div>`,
+  notes:"Valorizzare gli organizzatori: il metodo è a disposizione del fronte comune che nasce in questa sala."},
+
+{id:"s17",theme:"dark",title:"Dove arriveremo",html:`
+  <h1 class="heavy" data-anim style="font-size:clamp(34px,6vw,84px)">Dove arriveremo.</h1>
+  <ul class="tl" style="margin-top:1.2em; font-size:clamp(16px,2vw,24px)">
+    <li data-anim style="--i:1"><b>Milano, subito</b> — i primi atti sui casi che ci segnalerete oggi.</li>
+    <li data-anim style="--i:2"><b>La rete lombarda</b> — collegare i procedimenti aperti (Como, Saronno, Trescore Cremasco) in un fronte regionale.</li>
+    <li data-anim style="--i:3"><b>Lo standard nazionale</b> — un metodo replicabile, città per città, finché l'abusivismo non conviene più a nessuno.</li>
+  </ul>
+  <p class="sub corsivo" data-anim style="--i:4; margin-top:1em">Quindici anni ci hanno portato fin qui. I prossimi dieci li scrivete voi, con noi.</p>`,
+  notes:"Spostare l'attenzione dal passato al futuro: «Non siamo qui per il passato di nessuno. Siamo qui per i prossimi dieci anni dei tassisti milanesi.»"},
+
+{id:"s18",theme:"dark",title:"La proposta",html:`
+  <span class="chip" data-anim>La proposta, oggi</span>
+  <h1 class="heavy" data-anim style="--i:1; color:var(--rosso); font-size:clamp(30px,5.5vw,76px)">Segnalateci i 3 casi più gravi di Milano.</h1>
+  <p class="lead" data-anim style="--i:2">Il primo atto parte entro <b>15 giorni</b>.</p>
+  <p class="sub" data-anim style="--i:3">Modulo di adesione in sala — la vostra presenza fa la differenza.</p>
+  <div class="thumb" data-anim style="--i:4; margin-top:1em" data-img="img/qr-adesione.png" data-cap="QR adesione / contatti — da inserire"></div>
+  <div class="stripe"><span class="logos">FILT CGIL Taxi · Taxi Service Milano · UGL Taxi Milano · URITAXI Milano</span></div>`,
+  notes:"La CTA la «carica» Marco e la chiude il padrone di casa milanese. Concordare prima chi gestisce Q&A."}
+];}
+
+/* ===========================================================================
+   MOTORE
+   =========================================================================== */
+const stage=document.getElementById('stage');
+let SLIDES=[];            // tutte le slide nell'ordine di rotazione (incl. deep)
+let MAIN=[];              // indici delle scene principali
+let cur=0;               // indice corrente in SLIDES
+let mode='relatore';
+let timerInt=null, autoInt=null, seconds=0;
+
+function fmt(n){return String(n).padStart(2,'0');}
+
+async function loadData(){
+  const tryJson=async(f,fb)=>{ try{const r=await fetch('assets/'+f,{cache:'no-store'}); if(r.ok)return await r.json();}catch(e){} return fb; };
+  DATI=Object.assign(DATI, await tryJson('dati.json',{}));
+  REVOCHE=await tryJson('revoche.json',REVOCHE);
+  SENTENZE=await tryJson('sentenze.json',SENTENZE);
+  NORME=await tryJson('norme.json',NORME);
+  STAMPA=await tryJson('stampa.json',STAMPA);
+  DATI.revoche_totale = REVOCHE.length ? String(REVOCHE.length) : "[in verifica]";
+}
+
+function thumbHTML(img,cap){
+  return `<div class="thumb" data-img="${img||''}" data-cap="${(cap||'').replace(/"/g,'&quot;')}">
+    ${img?`<img src="${img}" alt="" onerror="this.outerHTML='<div class=ph>[ritaglio: ${img.split('/').pop()}]<br><small>file mancante</small></div>'">`:`<div class="ph">[ritaglio da inserire]</div>`}
+    <div class="sub" style="font-size:.8em;margin-top:.4em">${cap||''}</div></div>`;
+}
+
+function buildDeepCards(){
+  const cards=[];
+  // sentenze
+  SENTENZE.forEach(s=>{
+    cards.push({id:'d-'+s.id,theme:'light',deep:true,parent:(s.organo.includes('Costituz')||s.numero==='9672')?'s12':'s13',
+      title:`${s.organo} ${s.numero}/${s.anno}`,
+      html:`<div class="deepbadge">Approfondimento · sentenza</div>
+        <div class="row" style="align-items:flex-start; gap:3vw">
+          <div class="num-giant heavy" data-anim style="font-size:clamp(60px,12vw,150px)">${s.numero}<small style="display:block;font-size:.3em;color:var(--grigio)">/${s.anno}</small></div>
+          <div class="col deep" style="flex:1;min-width:280px">
+            <h2 class="heavy" data-anim style="--i:1">${s.oggetto}<small>${s.organo}${s.comune?' · '+s.comune:''}</small></h2>
+            <p class="lead" data-anim style="--i:2">${s.massima_breve||'[estratto da inserire]'}</p>
+            <div data-anim style="--i:3">${thumbHTML(s.immagine, (s.fonte_pdf||(s.organo+' '+s.numero+'/'+s.anno)))}</div>
+          </div></div>`,
+      notes:`Aprire il ritaglio (clic) per mostrare il fascicolo. ${s.comune?'Comune: '+s.comune+'. ':''}`});
+  });
+  // revoche → una card unica di registro esteso (parent s9)
+  // norme
+  NORME.forEach((n,i)=>{
+    cards.push({id:'d-norma-'+i,theme:'dark',deep:true,parent:'s5',
+      title:`${n.fonte} — ${n.articolo}`,
+      html:`<div class="deepbadge">Approfondimento · norma</div>
+        <h2 class="heavy" data-anim>${n.articolo}</h2>
+        <p class="sub" data-anim style="--i:1">${n.fonte}</p>
+        <div class="card" data-anim style="--i:2; margin-top:1em">${n.testo_breve}</div>`,
+      notes:'Norma di riferimento.'});
+  });
+  // stampa
+  STAMPA.forEach((a,i)=>{
+    cards.push({id:'d-stampa-'+i,theme:'light',deep:true,parent:'s2',
+      title:`${a.testata} — ${a.titolo}`,
+      html:`<div class="deepbadge">Approfondimento · stampa</div>
+        <h2 class="heavy" data-anim>${a.titolo}</h2>
+        <p class="sub" data-anim style="--i:1">${a.testata} · ${a.data}</p>
+        <div data-anim style="--i:2; margin-top:1em">${thumbHTML(a.immagine,a.testata+' · '+a.data)}</div>`,
+      notes:'Ritaglio stampa.'});
+  });
+  return cards;
+}
+
+function fillNumbers(html){
+  return html
+    .replaceAll('__COMUNI__', String(DATI.comuni_trattati).replace(/\D/g,'')||'0')
+    .replaceAll('__ATTI__', String(DATI.atti_periodo).replace(/\D/g,'')||'0')
+    .replaceAll('__ATTILAB__', DATI.atti_periodo_label||'')
+    .replaceAll('__REVOCHE__', /\d/.test(DATI.revoche_totale)?DATI.revoche_totale:'0')
+    .replaceAll('__PROC__', DATI.procedimenti_in_corso)
+    .replaceAll('__COMC__', DATI.comuni_in_corso)
+    .replaceAll('__DATA__', DATI.data_aggiornamento);
+}
+
+function build(){
+  const main=scenesDef();
+  const deep=buildDeepCards();
+  // ordine rotazione: per ogni scena principale, inserisci subito dopo i suoi deep
+  const ordered=[];
+  main.forEach(sc=>{
+    ordered.push(sc);
+    deep.filter(d=>d.parent===sc.id).forEach(d=>ordered.push(d));
+  });
+  SLIDES=ordered;
+  stage.innerHTML='';
+  SLIDES.forEach((sc,idx)=>{
+    const el=document.createElement('section');
+    el.className='scene '+sc.theme+(sc.deep?' deep-scene':'');
+    el.dataset.id=sc.id; el.dataset.deep=sc.deep?'1':'0'; el.dataset.idx=idx;
+    el.innerHTML=fillNumbers(sc.html);
+    stage.appendChild(el);
+  });
+  MAIN=SLIDES.map((s,i)=>s.deep?-1:i).filter(i=>i>=0);
+  // suffisso "+": rimetti il + dopo i count se il dato lo prevede
+  buildTOC();
+  // popola registro revoche
+  const tb=stage.querySelector('#regrev tbody');
+  if(tb){ REVOCHE.forEach(r=>{ const tr=document.createElement('tr');
+    tr.innerHTML=`<td><b>${r.comune}</b>${r.provincia?' ('+r.provincia+')':''}</td><td>${r.n_titoli||'-'}</td><td>${r.data||'-'}</td><td>${r.esito||''}</td>`;
+    tb.appendChild(tr);}); }
+  const rt=stage.querySelector('#revtot'); if(rt) rt.textContent=DATI.revoche_totale;
+}
+
+function buildTOC(){
+  const ol=document.querySelector('#toc ol'); ol.innerHTML='';
+  SLIDES.forEach((sc,i)=>{ if(sc.deep)return;
+    const li=document.createElement('li'); li.textContent=sc.title;
+    li.onclick=()=>{goto(i); toggleTOC(false);}; ol.appendChild(li);});
+}
+
+function applyCounters(el){
+  el.querySelectorAll('[data-count]').forEach(c=>{
+    const target=parseInt(c.dataset.count,10); if(isNaN(target)){c.textContent=c.dataset.count;return;}
+    const plus=(c.nextElementSibling&&/comuni|atti/.test(c.nextElementSibling.textContent))&&target>=100;
+    let v=0; const dur=1100, t0=performance.now();
+    const step=now=>{const p=Math.min(1,(now-t0)/dur); v=Math.round(target*(1-Math.pow(1-p,3)));
+      c.textContent=v+(p===1&&plus?'+':''); if(p<1)requestAnimationFrame(step);};
+    requestAnimationFrame(step);
+  });
+}
+
+function show(idx){
+  const prev=stage.querySelector('.scene.active');
+  if(prev){prev.classList.remove('active','run-domino');}
+  cur=(idx+SLIDES.length)%SLIDES.length;
+  const el=stage.children[cur];
+  el.classList.add('active');
+  if(el.dataset.id==='s14') setTimeout(()=>el.classList.add('run-domino'),900);
+  applyCounters(el);
+  // HUD
+  const sc=SLIDES[cur];
+  const mainPos=sc.deep? '↳ approfondimento' : (MAIN.indexOf(cur)+1)+' / '+MAIN.length;
+  document.querySelector('#hud .pos').textContent=mainPos;
+  document.querySelector('#notes .ntext').textContent=sc.notes||'';
+  // progress su scene principali
+  const ratio = sc.deep ? (cur/SLIDES.length) : (MAIN.indexOf(cur)/(MAIN.length-1));
+  document.getElementById('progress').style.width=(ratio*100)+'%';
+  // hint "↓ approfondimenti" se la scena ha deep collegati
+  const hasDeep = SLIDES[cur+1] && SLIDES[cur+1].deep && !sc.deep;
+  document.getElementById('downhint').classList.toggle('show', hasDeep && mode==='relatore');
+}
+
+/* navigazione relatore: ← → saltano i deep; ↓ entra nel primo deep; ↑ torna al parent */
+function nextMain(){ let i=cur; do{i=(i+1)%SLIDES.length;}while(SLIDES[i].deep && i!==cur); show(i); }
+function prevMain(){ let i=cur; do{i=(i-1+SLIDES.length)%SLIDES.length;}while(SLIDES[i].deep && i!==cur); show(i); }
+function enterDeep(){ if(SLIDES[cur+1]&&SLIDES[cur+1].deep) show(cur+1); }
+function nextDeepOrUp(dir){ // dentro i deep, ← → scorrono i deep dello stesso parent
+  const n=cur+dir;
+  if(SLIDES[n]&&SLIDES[n].deep){show(n);}
+}
+function exitDeep(){ // risali al parent
+  let i=cur; while(i>0 && SLIDES[i].deep) i--; show(i);
+}
+function goto(i){show(i);}
+
+/* VETRINA: scorre TUTTO (incl. deep) in loop */
+function startAuto(){
+  stopAuto();
+  const tick=()=>{
+    const sc=SLIDES[cur];
+    let next=cur+1;
+    if(next>=SLIDES.length){ if(!LOOP_VETRINA){stopAuto();return;} next=0; }
+    show(next);
+    schedule();
+  };
+  const schedule=()=>{
+    const sc=SLIDES[cur];
+    let d=SCENE_DURATIONS.default;
+    if(sc.deep) d=SCENE_DURATIONS.deep;
+    if(SCENE_DURATIONS[sc.id]) d=SCENE_DURATIONS[sc.id];
+    autoInt=setTimeout(tick, d*1000);
+  };
+  schedule();
+}
+function stopAuto(){ if(autoInt){clearTimeout(autoInt); autoInt=null;} }
+
+function setMode(m){
+  mode=m;
+  document.body.classList.toggle('mode-vetrina', m==='vetrina');
+  document.querySelector('#hud .mode').textContent = m==='vetrina'?'VETRINA':'RELATORE';
+  document.getElementById('hint').style.display = m==='vetrina'?'none':'';
+  if(m==='vetrina'){ startAuto(); }
+  else { stopAuto(); document.getElementById('downhint').classList.toggle('show', SLIDES[cur+1]&&SLIDES[cur+1].deep); }
+}
+
+/* timer intervento */
+function startTimer(){ stopTimer(); seconds=0; timerInt=setInterval(()=>{seconds++;
+  document.querySelector('#hud .timer').textContent=fmt(Math.floor(seconds/60))+':'+fmt(seconds%60);},1000);}
+function stopTimer(){ if(timerInt)clearInterval(timerInt); }
+
+/* lightbox */
+const lb=document.getElementById('lb');
+stage.addEventListener('click',e=>{
+  const t=e.target.closest('.thumb'); if(!t)return;
+  const img=t.dataset.img, cap=t.dataset.cap||'';
+  lb.querySelector('.box').innerHTML = img
+    ? `<img src="${img}" alt="" onerror="this.outerHTML='<div class=ph>[ritaglio mancante: ${img.split('/').pop()}]</div>'">`
+    : `<div class="ph">[ritaglio da inserire]</div>`;
+  lb.querySelector('.cap').textContent=cap;
+  lb.classList.add('show');
+});
+lb.addEventListener('click',()=>lb.classList.remove('show'));
+
+/* indice */
+function toggleTOC(force){ const t=document.getElementById('toc');
+  t.classList.toggle('show', force===undefined?undefined:force); }
+document.getElementById('toc').addEventListener('click',e=>{ if(e.target.id==='toc')toggleTOC(false); });
+
+/* note */
+function toggleNotes(){ document.getElementById('notes').classList.toggle('show'); }
+
+/* tastiera */
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('start').style.display==='none'){
+    const inDeep=SLIDES[cur]&&SLIDES[cur].deep;
+    switch(e.key){
+      case'ArrowRight':case' ': e.preventDefault(); mode==='vetrina'?(show(cur+1)):(inDeep?nextDeepOrUp(1):nextMain()); break;
+      case'ArrowLeft': mode==='vetrina'?show(cur-1):(inDeep?nextDeepOrUp(-1):prevMain()); break;
+      case'ArrowDown': if(mode==='relatore')enterDeep(); break;
+      case'ArrowUp': if(mode==='relatore')exitDeep(); break;
+      case'v':case'V': setMode(mode==='vetrina'?'relatore':'vetrina'); break;
+      case'n':case'N': toggleNotes(); break;
+      case'f':case'F': document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen(); break;
+      case'Escape': toggleTOC(); break;
+      case'Home': goto(0); break;
+    }
+  }
+});
+
+/* click sulle metà schermo (relatore) */
+stage.addEventListener('click',e=>{
+  if(e.target.closest('.thumb'))return;
+  if(mode!=='relatore')return;
+  (e.clientX > window.innerWidth/2) ? nextMain() : prevMain();
+});
+/* swipe */
+let tx=0; stage.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+stage.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50){dx<0?nextMain():prevMain();}});
+
+/* avvio */
+document.querySelectorAll('#start button').forEach(b=>b.onclick=async()=>{
+  document.getElementById('start').style.display='none';
+  await loadData(); build(); show(0); startTimer(); setMode(b.dataset.mode);
+});
+</script>
+</body>
+</html>
