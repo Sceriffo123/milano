@@ -3,6 +3,9 @@
 Web-app a slide, autonoma e offline, per l'intervento "Basta Abusivismo".
 Un solo file (`index.html`) + dati in `assets/`. Nessuna dipendenza esterna.
 
+> **PER CLAUDE DESIGN / AGENTI:** le istruzioni complete (specifiche, scene, regole, dati, leggibilità sala+smartphone, immagini) sono in **[BRIEF.md](BRIEF.md)**. Leggi quello: è la fonte autorevole su cosa costruire. Questo `index.html` è la base di partenza già funzionante da elevare graficamente.
+> Riferimento visivo dell'evento: `assets/img/locandina-ufficiale.jpg`.
+
 ## Due modalità
 - **Relatore** — navighi tu (← → scene, ↓ ↑ approfondimenti, `N` note, `F` fullscreen, `Esc` indice).
 - **Vetrina (loop)** — scorre da sola in loop, ideale per lo schermo in sala o sul VPS.
