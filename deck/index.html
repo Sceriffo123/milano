@@ -293,30 +293,54 @@
 
 <script>
 /* Modalità VETRINA: le slide scorrono da sole in loop.
-   - Premi  A  per attivare/disattivare lo scorrimento automatico.
-   - Apri l'URL con  #auto  in fondo per partire già in scorrimento
-     (ideale per lo schermo in sala o un sito in loop). */
+   - Pulsanti a schermo  ▶ Avvia / ⛔ Ferma  (in basso a sinistra).
+   - Tasto  A  per attivare/disattivare. URL con  #auto  parte già in loop. */
 (function () {
   var SECONDS = 8;
   var deck = document.querySelector('deck-stage');
   var timer = null;
   function slides() { return document.querySelectorAll('deck-stage > section'); }
   function activeIndex() { return [].findIndex.call(slides(), function (s) { return s.hasAttribute('data-deck-active'); }); }
+  function go(n) { if (deck && typeof deck.goTo === 'function') deck.goTo(n); }
   function start() {
     stop();
     document.body.setAttribute('data-auto', '1');
     timer = setInterval(function () {
       var total = slides().length, n = activeIndex();
-      deck.goTo((n + 1) % total);
+      go((n + 1) % total);
     }, SECONDS * 1000);
+    sync();
   }
-  function stop() { if (timer) clearInterval(timer); timer = null; document.body.removeAttribute('data-auto'); }
+  function stop() { if (timer) clearInterval(timer); timer = null; document.body.removeAttribute('data-auto'); sync(); }
+
+  /* --- pulsanti a schermo --- */
+  var bar = document.createElement('div');
+  bar.id = 'auto-ctl';
+  bar.style.cssText = 'position:fixed;left:18px;bottom:16px;z-index:2147483600;display:flex;gap:10px;font-family:Arial,Helvetica,sans-serif';
+  var base = 'border:0;border-radius:999px;padding:11px 20px;font-size:16px;font-weight:800;letter-spacing:.02em;color:#fff;box-shadow:0 6px 22px rgba(0,0,0,.4);transition:opacity .2s';
+  var bStart = document.createElement('button');
+  var bStop = document.createElement('button');
+  bStart.type = 'button'; bStop.type = 'button';
+  bStart.textContent = '▶ Avvia';
+  bStop.textContent = '⏹ Ferma';
+  bStart.style.cssText = base + ';background:#1FA862';
+  bStop.style.cssText = base + ';background:#C8102E';
+  bStart.onclick = function (e) { e.stopPropagation(); start(); };
+  bStop.onclick = function (e) { e.stopPropagation(); stop(); };
+  bar.appendChild(bStart); bar.appendChild(bStop);
+  function sync() {
+    var on = !!timer;
+    bStart.style.opacity = on ? '.4' : '1';
+    bStop.style.opacity = on ? '1' : '.4';
+    bStart.disabled = on; bStop.disabled = !on;
+    bStart.style.cursor = on ? 'default' : 'pointer';
+    bStop.style.cursor = on ? 'pointer' : 'default';
+  }
+  function add() { document.body.appendChild(bar); sync(); }
+  if (document.body) add(); else window.addEventListener('DOMContentLoaded', add);
+
   window.addEventListener('keydown', function (e) {
     if (e.key === 'a' || e.key === 'A') { timer ? stop() : start(); }
-  });
-  // qualsiasi navigazione manuale ferma lo scorrimento automatico
-  ['mousedown', 'touchstart'].forEach(function (ev) {
-    window.addEventListener(ev, function () { /* lascia attivo: solo i tasti freccia non fermano */ }, { passive: true });
   });
   if ((location.hash || '').replace('#', '') === 'auto') {
     if (deck && deck.goTo) start(); else window.addEventListener('load', start);
