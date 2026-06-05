@@ -241,7 +241,7 @@ body { font-family: var(--font-body, "Archivo","Helvetica Neue",Arial,sans-serif
 .logoplate { background: #fff; border-radius: 12px; padding: 12px 16px; display: inline-flex; align-items: center; box-shadow: 0 12px 34px rgba(0,0,0,.35); }
 .logoplate img { display: block; height: 56px; width: auto; }
 .logoplate.lg img { height: 96px; }
-.logoplate.sm img { height: 40px; }
+.logoplate.sm img { height: 72px; }
 
 /* ---------- registro casi "a scendere" ---------- */
 .casi-grid { columns: 3; column-gap: 36px; }
