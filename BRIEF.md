@@ -103,7 +103,7 @@ Non solo testo: ogni scena chiave deve avere un elemento visivo forte che dia "l
 ### Scena 1 — Titolo (scura)
 - Chip rosso: "MILANO · 10 GIUGNO 2026 · SPAZIO KOLBE"
 - Titolo: **BASTA ABUSIVISMO**
-- Sottotitolo: *Il metodo Firenze: quindici anni di atti, risultati verificabili.*
+- Sottotitolo: *Dal 2011 il metodo, dal 2015 a Firenze. Quindici anni di atti, risultati verificabili.* (il metodo nasce nel 2011 = 15 anni; Firenze lo adotta nel 2015 = 10 anni — distinzione da rispettare ovunque)
 - Relatori (TUTTI E QUATTRO, come nella locandina ufficiale): **Claudio Giudici · Alessandro Genovese · Marco Morana · Lapo Lemmi**
 - Striscia bianca con loghi delle 4 sigle + "Incontro operativo sul contrasto all'abusivismo nel trasporto pubblico non di linea"
 - Riferimento visivo: `assets/img/locandina-ufficiale.jpg` (font "BASTA" stellato nero, "ABUSIVISMO" rosso, Duomo + taxi bianco). Riprendine lo spirito grafico, non copiarla pixel per pixel.
@@ -111,11 +111,14 @@ Non solo testo: ogni scena chiave deve avere un elemento visivo forte che dia "l
 
 ### Scena 2 — 2011: dove tutto è cominciato (chiara)
 - Numero gigante rosso: **2011** · Titolo: "Dove tutto è cominciato"
-- Testo: *Una volontà precisa: non limitarsi a denunciare l'abusivismo, ma costruire un metodo.*
-- Card "2013 — L'AZIONE ORGANIZZATA": **Avv. Maddalena D'Aprile** (primo supporto legale) e **Dott.ssa Giacinta Bucchi** (commercialista, struttura amministrativa)
+- Testo: *Non denunciare soltanto l'abusivismo: costruire un metodo.*
+- Mini-timeline a tre tappe (cronologia VINCOLANTE):
+  - **2011** — Nasce l'attività antiabusivismo.
+  - **2013** — Il metodo si struttura: **Avv. Maddalena D'Aprile** (supporto legale) e **Dott.ssa Giacinta Bucchi** (commercialista).
+  - **2015** — **Firenze crede nel metodo** e lo applica. Da qui, dieci anni di atti. (Il metodo ha 15 anni, Firenze 10.)
 - Banda inferiore: **2014 — già sulla stampa nazionale.** «La maxi evasione fiscale dei 3mila NCC fantasma» (Il Messaggero, 15.05.2014): la nostra analisi su evasione e danno erariale. Dieci anni dopo, quei dati sono ancora la base delle inchieste nazionali.
 - `[MATERIALE: messaggero-2014.jpg — ritaglio Il Messaggero 15.05.2014]`
-- **Animazione:** timeline che si costruisce: 2011 → card 2013 → banda 2014, tre battiti.
+- **Animazione:** la timeline si costruisce tappa per tappa: 2011 → 2013 → 2015, poi la banda 2014.
 
 ### Scena 3 — 2017 (scura, minimale)
 - Solo: **2017** gigante rosso e sotto, corsivo bianco: **"Si rideva."**
@@ -317,7 +320,7 @@ Mai rispondere alla persona, sempre ai fatti ("I protocolli e le sentenze sono p
 }
 ```
 
-## (sopra: dati.json)
+## revoche.json
 ```json
 [
   {
@@ -347,7 +350,7 @@ Mai rispondere alla persona, sempre ai fatti ("I protocolli e le sentenze sono p
 ]
 ```
 
-## (sopra: revoche.json)
+## sentenze.json
 ```json
 [
   {
@@ -518,7 +521,7 @@ Mai rispondere alla persona, sempre ai fatti ("I protocolli e le sentenze sono p
 ]
 ```
 
-## (sopra: sentenze.json)
+## norme.json
 ```json
 [
   {
@@ -534,7 +537,7 @@ Mai rispondere alla persona, sempre ai fatti ("I protocolli e le sentenze sono p
 ]
 ```
 
-## (sopra: norme.json)
+## stampa.json
 ```json
 [
   {
@@ -546,5 +549,4 @@ Mai rispondere alla persona, sempre ai fatti ("I protocolli e le sentenze sono p
 ]
 ```
 
-## (sopra: stampa.json)
 ## Asset nel repo: assets/img/{logo-uritaxi.png, logo-filt-cgil.png, qr-webapp.png, locandina-ufficiale.jpg}
