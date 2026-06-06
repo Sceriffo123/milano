@@ -397,15 +397,16 @@
 
   <!-- ULTIMA · ANNI AVANTI -->
   <section class="s" data-label="Anni avanti">
-    <div class="eyebrow reveal"><span class="dot"></span> Il vantaggio vero</div>
-    <h2 class="heavy h1 reveal" style="--d:.06s">Non solo conoscenza.<br><span class="c-rosso">Capacità di integrazione.</span></h2>
-    <p class="sub reveal" style="--d:.14s; max-width:none">Sapere la materia non basta. La forza è <b>mettere insieme</b>, in un solo sistema, ciò che gli altri tengono separato.</p>
-    <div class="cards reveal" style="--d:.22s; grid-template-columns:repeat(3,1fr); margin-top:16px; max-width:1620px">
-      <div class="glass bar blu"><div class="ttl">Conoscenza</div><p>Quindici anni di normativa, giurisprudenza e casi: una base che non si recupera in fretta.</p></div>
-      <div class="glass bar"><div class="ttl">Integrazione</div><p>Giurisprudenza, dati del territorio, modelli di atti, scadenze e protocolli: collegati in un unico sistema.</p></div>
-      <div class="glass bar verde"><div class="ttl">Velocità</div><p>Ciò che ad altri richiede mesi, da noi è già pronto: 250+ atti in cinque mesi, si verifica.</p></div>
-    </div>
-    <div class="band reveal" style="--d:.32s; max-width:1620px">Non è presunzione: è un vantaggio costruito atto dopo atto. Su questo terreno <b>siamo anni avanti a chiunque</b> — e si misura dai risultati, non dagli annunci.</div>
+    <style>
+      .sysimg img { width: 1080px; max-width: 80vw; max-height: 55vh; border-radius: 10px; display:block;
+        box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.10); }
+      @media (prefers-reduced-motion:no-preference){ [data-deck-active] .sysimg img{ animation: sysin .9s cubic-bezier(.2,.9,.3,1) both; animation-delay:.4s } }
+      @keyframes sysin { from{opacity:0; transform:translateY(26px) scale(.96)} to{opacity:1; transform:none} }
+    </style>
+    <div class="eyebrow reveal"><span class="dot"></span> Il vantaggio vero · non solo conoscenza, capacità di integrazione</div>
+    <h2 class="heavy h1 reveal" style="--d:.06s">Siamo anni avanti.</h2>
+    <div class="sysimg reveal" style="--d:.16s; margin-top:12px; display:flex; justify-content:center"><img src="assets/img/agentis.png" alt="Il sistema al lavoro" onerror="this.style.display='none'"></div>
+    <div class="band reveal" style="--d:.3s; max-width:1620px; margin-top:14px">Un solo sistema che integra giurisprudenza, dati del territorio, modelli di atti e scadenze: ciò che ad altri richiede mesi, da noi è già pronto. <b>Non si improvvisa, e non si copia in fretta.</b></div>
   </section>
 
 </deck-stage>
