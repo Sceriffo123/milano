@@ -7,6 +7,9 @@
 <title>Basta Abusivismo — Il metodo Firenze</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="presentations/cinematic/deck.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <style>
   /* Loghi su un'unica targa bianca pulita (stile intestazione istituzionale). */
   .logostrip { background:#fff !important; border-radius:14px !important; padding:10px 20px !important; gap:24px !important;
@@ -40,7 +43,7 @@
       <p class="lead reveal" style="--d:.28s">Quindici anni di attività, dieci di metodo Firenze.<br><b>Non buoni propositi: atti e risultati verificabili.</b></p>
       <div class="reveal" style="--d:.34s">
         <div style="font-weight:700; letter-spacing:.22em; text-transform:uppercase; font-size:14px; color:var(--ink-faint); margin-bottom:6px">Presentano</div>
-        <div style="font-size:23px; font-weight:600; color:var(--ink)">Claudio Giudici · Marco Morana · Lapo Lemmi</div>
+        <div style="font-family:'Fraunces',Georgia,serif; font-size:27px; font-weight:600; letter-spacing:.01em; color:var(--ink)">Claudio Giudici · Marco Morana · Lapo Lemmi</div>
       </div>
     </div>
     <div class="foot">
@@ -369,6 +372,16 @@
       @keyframes morphOut{ 0%{transform:rotateY(0); opacity:1;} 50%,100%{transform:rotateY(90deg); opacity:0;} }
       @keyframes morphIn{ 0%,50%{transform:rotateY(-90deg); opacity:0;} 100%{transform:rotateY(0); opacity:1;} }
       @keyframes morphCap{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:none;} }
+      .morph-cities{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:26px; opacity:0; }
+      .morph-cities .city{ font-weight:700; font-size:21px; padding:9px 20px; border-radius:999px;
+        border:1px solid rgba(255,255,255,.16); color:var(--ink-faint); background:rgba(255,255,255,.04); }
+      .morph-cities .city.on{ color:#0f1f33; background:linear-gradient(135deg,#fbbf24,#f59e0b); border-color:transparent; box-shadow:0 6px 22px rgba(245,158,11,.35); }
+      .morph-cities .city.now{ color:#fff; background:rgba(216,21,40,.16); border-color:rgba(216,21,40,.55); }
+      .morph-cities .city.soon{ font-style:italic; font-weight:600; }
+      @media (prefers-reduced-motion: no-preference){
+        [data-deck-active] .morph-cities{ animation:morphCap .8s ease both; animation-delay:3.4s; }
+      }
+      @media (prefers-reduced-motion: reduce){ .morph-cities{opacity:1} }
     </style>
     <div class="eyebrow reveal" style="text-align:center; justify-content:center"><span class="dot"></span> Lo stesso metodo · una squadra che cresce, città dopo città</div>
     <div class="morph-wrap" style="margin-top:10px">
@@ -376,6 +389,13 @@
       <img class="morph-fi" src="assets/img/logo-gaa-firenze.svg" alt="GAA Firenze">
     </div>
     <h2 class="heavy h1 morph-cap">Da Firenze.<br><span class="grad">A tutta Italia.</span></h2>
+    <div class="morph-cities">
+      <span class="city on">Firenze</span>
+      <span class="city on">Ravenna</span>
+      <span class="city on">Riccione</span>
+      <span class="city now">Milano, oggi</span>
+      <span class="city soon">…e altre città stanno entrando</span>
+    </div>
   </section>
 
   <!-- COMO · LA PROVA -->
