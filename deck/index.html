@@ -3,7 +3,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Basta Abusivismo — Il metodo Firenze</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="presentations/cinematic/deck.css">
@@ -11,6 +11,33 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <style>
+  /* === Mobile / iOS hardening — responsività massima === */
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  html, body { margin:0; padding:0; height:100%; background:#000; }
+  @supports (height:100dvh){ html, body { height:100dvh; } }
+  body { overflow:hidden; overscroll-behavior:none; }
+
+  /* Invito a ruotare: solo smartphone in verticale (touch) */
+  #rotate-hint{ display:none; }
+  @media (orientation:portrait) and (max-width:820px) and (pointer:coarse){
+    #rotate-hint:not(.dismissed){ display:flex; }
+  }
+  #rotate-hint{ position:fixed; inset:0; z-index:2147483600;
+    background:radial-gradient(120% 120% at 50% 0%, #16202e 0%, #0b0e14 72%);
+    color:#fff; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:9vw 8vw;
+    font-family:'Archivo', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }
+  #rotate-hint .ph{ width:92px; height:156px; border:5px solid #fff; border-radius:16px;
+    position:relative; margin-bottom:32px; transform-origin:center;
+    animation:rotPhone 2.6s ease-in-out infinite; }
+  #rotate-hint .ph::after{ content:''; position:absolute; left:50%; bottom:8px; width:24px; height:4px;
+    background:rgba(255,255,255,.6); border-radius:3px; transform:translateX(-50%); }
+  @keyframes rotPhone{ 0%,28%{transform:rotate(0)} 58%,100%{transform:rotate(-90deg)} }
+  #rotate-hint h3{ font-size:30px; margin:0 0 12px; font-weight:800; letter-spacing:.01em; }
+  #rotate-hint p{ font-size:18px; margin:0 0 26px; color:rgba(255,255,255,.74); max-width:24ch; line-height:1.45; }
+  #rotate-hint button{ appearance:none; -webkit-appearance:none; border:1px solid rgba(255,255,255,.32);
+    background:transparent; color:#fff; font:inherit; font-size:15px; padding:10px 24px; border-radius:999px; }
+
   /* Loghi su un'unica targa bianca pulita (stile intestazione istituzionale). */
   .logostrip { background:#fff !important; border-radius:14px !important; padding:10px 20px !important; gap:24px !important;
     box-shadow:0 14px 36px rgba(0,0,0,.4) !important; align-items:center !important; }
@@ -612,6 +639,45 @@
   var deck = document.querySelector('deck-stage');
   if (deck) deck.addEventListener('slidechange', function (e) { check(e.detail && e.detail.slide); });
   var act = document.querySelector('deck-stage>section[data-deck-active]'); if (act) check(act);
+})();
+</script>
+<div id="rotate-hint" role="dialog" aria-label="Ruota il dispositivo">
+  <div class="ph"></div>
+  <h3>Gira il telefono</h3>
+  <p>La presentazione dà il meglio in orizzontale: testi grandi e ben leggibili.</p>
+  <button type="button" onclick="document.getElementById('rotate-hint').classList.add('dismissed')">Continua comunque</button>
+</div>
+<script>
+/* === Touch: swipe per navigare + re-fit su rotazione/viewport iOS === */
+(function(){
+  function refit(){ try { window.dispatchEvent(new Event('resize')); } catch(e){} }
+  window.addEventListener('orientationchange', function(){ setTimeout(refit,250); setTimeout(refit,650); });
+  if (window.visualViewport){ window.visualViewport.addEventListener('resize', refit); }
+  // Refit di sicurezza all'avvio: evita la race che lascia il palco a scale(0)
+  window.addEventListener('load', function(){ setTimeout(refit,60); setTimeout(refit,400); });
+  setTimeout(refit, 1200);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit).catch(function(){});
+  // Rete di sicurezza: non lasciare MAI il palco nascosto (se il reveal interno
+  // del componente, legato a requestAnimationFrame, non scattasse).
+  setTimeout(function(){
+    var ds=document.querySelector('deck-stage');
+    if (ds){ ds.removeAttribute('data-fonts-pending'); refit(); }
+  }, 2500);
+
+  var sx=0, sy=0, st=0, tracking=false;
+  window.addEventListener('touchstart', function(e){
+    if (e.touches.length !== 1){ tracking=false; return; }
+    var t=e.touches[0]; sx=t.clientX; sy=t.clientY; st=Date.now(); tracking=true;
+  }, {passive:true});
+  window.addEventListener('touchend', function(e){
+    if (!tracking) return; tracking=false;
+    var t=e.changedTouches[0];
+    var dx=t.clientX-sx, dy=t.clientY-sy, dt=Date.now()-st;
+    if (dt<700 && Math.abs(dx)>55 && Math.abs(dx) > Math.abs(dy)*1.6){
+      var key = dx<0 ? 'ArrowRight' : 'ArrowLeft';
+      try { window.dispatchEvent(new KeyboardEvent('keydown',{key:key,bubbles:true})); } catch(e2){}
+    }
+  }, {passive:true});
 })();
 </script>
 </body>
