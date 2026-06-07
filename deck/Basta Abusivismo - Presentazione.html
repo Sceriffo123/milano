@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Basta Abusivismo — Il metodo Firenze</title>
+<link rel="icon" href="assets/img/logo-gaa.png">
+<link rel="apple-touch-icon" href="assets/img/logo-gaa.png">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="presentations/cinematic/deck.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -573,10 +575,11 @@
   }
   function stop() { if (timer) clearInterval(timer); timer = null; remaining = SECONDS; document.body.removeAttribute('data-auto'); sync(); }
 
-  /* --- controllo a schermo: un solo toggle Vetrina, in vetro scuro --- */
+  /* --- controllo a schermo: toggle Vetrina + cronometro circolare --- */
+  var C = 2 * Math.PI * 20; // circonferenza anello (r=20)
   var bar = document.createElement('div');
   bar.id = 'auto-ctl';
-  bar.style.cssText = 'position:fixed;left:16px;bottom:14px;z-index:2147483600;font-family:Archivo,-apple-system,BlinkMacSystemFont,Arial,sans-serif';
+  bar.style.cssText = 'position:fixed;left:16px;bottom:14px;z-index:2147483600;display:flex;align-items:center;gap:11px;font-family:Archivo,-apple-system,BlinkMacSystemFont,Arial,sans-serif';
   var bToggle = document.createElement('button');
   bToggle.type = 'button';
   bToggle.style.cssText = 'display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.16);'
@@ -586,14 +589,34 @@
   bToggle.onclick = function (e) { e.stopPropagation(); timer ? stop() : start(); };
   bToggle.onmousedown = function () { bToggle.style.transform = 'scale(.96)'; };
   bToggle.onmouseup = function () { bToggle.style.transform = ''; };
+  // Cronometro circolare (anello che si svuota + numero al centro)
+  var timerEl = document.createElement('div');
+  timerEl.style.cssText = 'position:relative;width:50px;height:50px;display:none;align-items:center;justify-content:center;'
+    + 'background:rgba(16,20,28,.66);border-radius:999px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 20px rgba(0,0,0,.34);';
+  timerEl.innerHTML =
+    '<svg width="50" height="50" viewBox="0 0 50 50" style="transform:rotate(-90deg)">'
+    + '<circle cx="25" cy="25" r="20" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="4"/>'
+    + '<circle class="ring" cx="25" cy="25" r="20" fill="none" stroke="#36d27e" stroke-width="4" stroke-linecap="round"'
+    + ' stroke-dasharray="' + C + '" stroke-dashoffset="0" style="transition:stroke-dashoffset .95s linear"/></svg>'
+    + '<b class="num" style="position:absolute;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:#fff">' + SECONDS + '</b>';
   bar.appendChild(bToggle);
+  bar.appendChild(timerEl);
   function sync() {
     var on = !!timer;
     bToggle.innerHTML = on
-      ? '<span style="font-size:11px;line-height:1">⏸</span> Pausa <span style="opacity:.55">·</span> <b style="font-variant-numeric:tabular-nums;display:inline-block;min-width:2.2ch;text-align:right">' + remaining + 's</b>'
+      ? '<span style="font-size:11px;line-height:1">⏸</span> Pausa vetrina'
       : '<span style="color:#36d27e;font-size:11px;line-height:1">●</span> Avvia vetrina';
     bToggle.style.background = on ? 'rgba(200,16,46,.78)' : 'rgba(16,20,28,.66)';
     bToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+    timerEl.style.display = on ? 'flex' : 'none';
+    var ring = timerEl.querySelector('.ring');
+    var num = timerEl.querySelector('.num');
+    if (num) num.textContent = remaining;
+    if (ring) {
+      // anello pieno a SECONDS, vuoto a 0; rosso negli ultimi 3s
+      ring.style.strokeDashoffset = C * (1 - remaining / SECONDS);
+      ring.setAttribute('stroke', remaining <= 3 ? '#ff4d4d' : '#36d27e');
+    }
   }
   function add() { document.body.appendChild(bar); sync(); }
   if (document.body) add(); else window.addEventListener('DOMContentLoaded', add);
