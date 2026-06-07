@@ -552,19 +552,26 @@
   var SECONDS = 14;
   var deck = document.querySelector('deck-stage');
   var timer = null;
+  var remaining = SECONDS;
   function slides() { return document.querySelectorAll('deck-stage > section'); }
   function activeIndex() { return [].findIndex.call(slides(), function (s) { return s.hasAttribute('data-deck-active'); }); }
   function go(n) { if (deck && typeof deck.goTo === 'function') deck.goTo(n); }
   function start() {
     stop();
     document.body.setAttribute('data-auto', '1');
+    remaining = SECONDS;
     timer = setInterval(function () {
-      var total = slides().length, n = activeIndex();
-      go((n + 1) % total);
-    }, SECONDS * 1000);
+      remaining--;
+      if (remaining <= 0) {
+        var total = slides().length, n = activeIndex();
+        go((n + 1) % total);
+        remaining = SECONDS;
+      }
+      sync();
+    }, 1000);
     sync();
   }
-  function stop() { if (timer) clearInterval(timer); timer = null; document.body.removeAttribute('data-auto'); sync(); }
+  function stop() { if (timer) clearInterval(timer); timer = null; remaining = SECONDS; document.body.removeAttribute('data-auto'); sync(); }
 
   /* --- controllo a schermo: un solo toggle Vetrina, in vetro scuro --- */
   var bar = document.createElement('div');
@@ -583,7 +590,7 @@
   function sync() {
     var on = !!timer;
     bToggle.innerHTML = on
-      ? '<span style="font-size:11px;line-height:1">⏸</span> Pausa vetrina'
+      ? '<span style="font-size:11px;line-height:1">⏸</span> Pausa <span style="opacity:.55">·</span> <b style="font-variant-numeric:tabular-nums;display:inline-block;min-width:2.2ch;text-align:right">' + remaining + 's</b>'
       : '<span style="color:#36d27e;font-size:11px;line-height:1">●</span> Avvia vetrina';
     bToggle.style.background = on ? 'rgba(200,16,46,.78)' : 'rgba(16,20,28,.66)';
     bToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
