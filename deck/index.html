@@ -566,28 +566,27 @@
   }
   function stop() { if (timer) clearInterval(timer); timer = null; document.body.removeAttribute('data-auto'); sync(); }
 
-  /* --- pulsanti a schermo --- */
+  /* --- controllo a schermo: un solo toggle Vetrina, in vetro scuro --- */
   var bar = document.createElement('div');
   bar.id = 'auto-ctl';
-  bar.style.cssText = 'position:fixed;left:18px;bottom:16px;z-index:2147483600;display:flex;gap:10px;font-family:Arial,Helvetica,sans-serif';
-  var base = 'border:0;border-radius:999px;padding:11px 20px;font-size:16px;font-weight:800;letter-spacing:.02em;color:#fff;box-shadow:0 6px 22px rgba(0,0,0,.4);transition:opacity .2s';
-  var bStart = document.createElement('button');
-  var bStop = document.createElement('button');
-  bStart.type = 'button'; bStop.type = 'button';
-  bStart.textContent = '▶ Avvia';
-  bStop.textContent = '⏹ Ferma';
-  bStart.style.cssText = base + ';background:#1FA862';
-  bStop.style.cssText = base + ';background:#C8102E';
-  bStart.onclick = function (e) { e.stopPropagation(); start(); };
-  bStop.onclick = function (e) { e.stopPropagation(); stop(); };
-  bar.appendChild(bStart); bar.appendChild(bStop);
+  bar.style.cssText = 'position:fixed;left:16px;bottom:14px;z-index:2147483600;font-family:Archivo,-apple-system,BlinkMacSystemFont,Arial,sans-serif';
+  var bToggle = document.createElement('button');
+  bToggle.type = 'button';
+  bToggle.style.cssText = 'display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.16);'
+    + 'border-radius:999px;padding:9px 16px;font-size:14px;font-weight:700;letter-spacing:.02em;color:#fff;'
+    + 'background:rgba(16,20,28,.66);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);'
+    + 'box-shadow:0 6px 20px rgba(0,0,0,.34);cursor:pointer;transition:background .18s,transform .12s;';
+  bToggle.onclick = function (e) { e.stopPropagation(); timer ? stop() : start(); };
+  bToggle.onmousedown = function () { bToggle.style.transform = 'scale(.96)'; };
+  bToggle.onmouseup = function () { bToggle.style.transform = ''; };
+  bar.appendChild(bToggle);
   function sync() {
     var on = !!timer;
-    bStart.style.opacity = on ? '.4' : '1';
-    bStop.style.opacity = on ? '1' : '.4';
-    bStart.disabled = on; bStop.disabled = !on;
-    bStart.style.cursor = on ? 'default' : 'pointer';
-    bStop.style.cursor = on ? 'pointer' : 'default';
+    bToggle.innerHTML = on
+      ? '<span style="font-size:11px;line-height:1">⏸</span> Pausa vetrina'
+      : '<span style="color:#36d27e;font-size:11px;line-height:1">●</span> Avvia vetrina';
+    bToggle.style.background = on ? 'rgba(200,16,46,.78)' : 'rgba(16,20,28,.66)';
+    bToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
   }
   function add() { document.body.appendChild(bar); sync(); }
   if (document.body) add(); else window.addEventListener('DOMContentLoaded', add);
