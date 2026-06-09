@@ -304,10 +304,11 @@
       .col2 .t { font-size: 19px; font-weight: 800; color: var(--ink-dim); text-align: center; line-height: 1.16; }
       .col2.hot .t { color: #fff; }
       .col2 .t small { display: block; font-weight: 600; opacity: .75; font-size: 14px; margin-top: 2px; }
-      @media (prefers-reduced-motion: no-preference) {
-        [data-deck-active] .brick { animation: brickFall .42s cubic-bezier(.45,.04,.9,.4) forwards;
-          animation-delay: calc(var(--i,0) * .3s + .45s); }
-      }
+      /* Effetto domino: centrale alla narrazione, quindi attivo SEMPRE —
+         anche con "Riduci movimento" attivo (Mac/iOS), che altrimenti lo
+         bloccherebbe lasciando i mattoni in piedi. */
+      [data-deck-active] .brick { animation: brickFall .46s cubic-bezier(.45,.04,.9,.4) forwards;
+        animation-delay: calc(var(--i,0) * .32s + .5s); }
       @keyframes brickFall { from { transform: rotate(0); } to { transform: rotate(84deg); } }
     </style>
     <div class="dom2">
