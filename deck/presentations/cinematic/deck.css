@@ -209,7 +209,7 @@ body { font-family: var(--font-body, "Archivo","Helvetica Neue",Arial,sans-serif
 .reveal-x { opacity: 1; transform: none; }
 .grow { transform: none; }
 
-@media (prefers-reduced-motion: no-preference) {
+@media screen {
   [data-deck-active] .reveal { animation: cineRise .9s cubic-bezier(.16,.7,.24,1) both; animation-delay: var(--d, 0s); }
   [data-deck-active] .reveal-x { animation: cineSlide 1s cubic-bezier(.16,.7,.24,1) both; animation-delay: var(--d, 0s); }
   [data-deck-active] .kenburns { animation: ken 14s ease-out both; }

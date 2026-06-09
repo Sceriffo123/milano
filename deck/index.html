@@ -108,7 +108,7 @@
         box-shadow: 0 26px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08); }
       .news .ph2b { width: 420px; height: 560px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
         text-align: center; background: #11141b; border: 1px dashed #444; color: #9a948b; font-weight: 700; padding: 24px; }
-      @media (prefers-reduced-motion: no-preference) {
+      @media screen {
         [data-deck-active] .news img, [data-deck-active] .news .ph2b {
           animation: newsIn .8s cubic-bezier(.2,.9,.3,1) both; animation-delay: .4s; }
       }
@@ -170,7 +170,7 @@
       .flow.grad .step .t { color:#EDEBE6 !important; font-weight:800; }
       .flow.grad .step small { color:#9aa0aa !important; }
       .flow.grad .step:nth-child(5) .n, .flow.grad .step:nth-child(5) .t, .flow.grad .step:nth-child(5) small { color:#fff !important; }
-      @media (prefers-reduced-motion: no-preference) {
+      @media screen {
         [data-deck-active] .flow.grad .step { animation: stepOn .45s ease both; }
         [data-deck-active] .flow.grad .step:nth-child(1){ animation-delay:.45s }
         [data-deck-active] .flow.grad .step:nth-child(2){ animation-delay:.80s }
@@ -391,7 +391,7 @@
       .morph-it{ z-index:1; opacity:0; }
       .morph-fi{ z-index:2; }
       .morph-cap{ opacity:0; text-align:center; margin-top:30px; }
-      @media (prefers-reduced-motion: no-preference){
+      @media screen{
         [data-deck-active] .morph-wrap{ animation:morphPop 1.1s cubic-bezier(.2,1.2,.3,1) both; transform-origin:center; }
         [data-deck-active] .morph-fi{ animation:morphOut 1s ease-in-out both; animation-delay:1.5s; }
         [data-deck-active] .morph-it{ animation:morphIn 1s ease-in-out both; animation-delay:1.5s; }
@@ -408,7 +408,7 @@
       .morph-cities .city.on{ color:#0f1f33; background:linear-gradient(135deg,#fbbf24,#f59e0b); border-color:transparent; box-shadow:0 6px 22px rgba(245,158,11,.35); }
       .morph-cities .city.now{ color:#fff; background:rgba(216,21,40,.16); border-color:rgba(216,21,40,.55); }
       .morph-cities .city.soon{ font-style:italic; font-weight:600; }
-      @media (prefers-reduced-motion: no-preference){
+      @media screen{
         [data-deck-active] .morph-cities{ animation:morphCap .8s ease both; animation-delay:3.4s; }
       }
       @media (prefers-reduced-motion: reduce){ .morph-cities{opacity:1} }
@@ -438,7 +438,7 @@
       .boom .ph2 { width: 560px; max-width: 48vw; aspect-ratio: 3/2; border-radius: 10px;
         display: flex; align-items: center; justify-content: center; text-align: center;
         background: #11141b; border: 1px dashed #444; color: #9a948b; padding: 24px; font-weight: 700; }
-      @media (prefers-reduced-motion: no-preference) {
+      @media screen {
         [data-deck-active] .boom img, [data-deck-active] .boom .ph2 {
           animation: boom 1s cubic-bezier(.2,1.25,.3,1) both; animation-delay: .5s; transform-origin: center; }
       }
@@ -506,7 +506,7 @@
     <style>
       .sysimg img { width: 1080px; max-width: 80vw; max-height: 55vh; border-radius: 10px; display:block;
         box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.10); }
-      @media (prefers-reduced-motion:no-preference){ [data-deck-active] .sysimg img{ animation: sysin .9s cubic-bezier(.2,.9,.3,1) both; animation-delay:.4s } }
+      @media screen{ [data-deck-active] .sysimg img{ animation: sysin .9s cubic-bezier(.2,.9,.3,1) both; animation-delay:.4s } }
       @keyframes sysin { from{opacity:0; transform:translateY(26px) scale(.96)} to{opacity:1; transform:none} }
     </style>
     <div class="eyebrow reveal"><span class="dot"></span> Il vantaggio vero · non solo conoscenza, capacità di integrazione</div>
